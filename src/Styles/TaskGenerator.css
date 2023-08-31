@@ -1,0 +1,15 @@
+#todo-container {
+    border: 1px dotted black;
+    border-radius: 5px;
+    background-color: blueviolet ;
+    width: 300px;
+    
+}
+
+#drop-container {
+    width: 400px;
+    height: 70vh;
+    background-color: darksalmon;
+    border: 4px solid black;
+}
+
