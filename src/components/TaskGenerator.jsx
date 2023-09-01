@@ -5,8 +5,48 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 export default function TaskGenerator() {
 
-    const handleDragDrop = () => {
-        console.log('hello there')
+    /*Results is an object that containes an object with helpful info about
+    individual element, the source is the initial position and the destination is the
+    droppped position:
+    
+    {draggableID: example123,
+        type: 'group,
+        source: {index: 0, droppableId: conatinerOne},
+        destination: {index: 1, droppableId: ContainerTwo}
+        (there are others like mode and reason too.) }
+
+    Above is an example of an element being dragged from the top position of containerOne
+    to the second position of containerTwo.
+
+
+    }*/
+    const handleDragDrop = (results) => {
+        const {source, destination, type} = results;
+        {/* Destructuring parts of the results to create varibales out of */}
+        console.log(results);
+
+        if (!destination) return;
+
+        if(source.droppableId === destination.droppableId && 
+            source.index === destination.index) return;
+            {/*Essentially if the position of an element doesnt change at all return early
+        to avoid upcoming logic */}
+        
+        if (type === 'group') {
+            const reorderedTodos = [...todos];
+            const sourceIndex = source.index;
+            const destinationIndex = destination.index;
+            const [removedTodos] = reorderedTodos.splice(sourceIndex, 1);
+            reorderedTodos.splice(destinationIndex, 0, removedTodos);
+
+            return setTodos(reorderedTodos);
+        }
+        {/*Above we are creating a copy of our Todos State and then using the index of both the 
+    source of the element and its destination we are creating a varibale that holds the value of the 
+todo that was removed from one container and then altering our copy of the Todos array such that this
+element is removed, finally we add the removed todo back into its new position with the destination index
+and setTodos to this new order.  */}
+        
     }
 
     const [newObject, setNewObject] = useState('');
@@ -43,7 +83,7 @@ export default function TaskGenerator() {
 
     return(
         <>
-        <DragDropContext onDragEnd={handleDragDrop}>
+        
             <form onSubmit={handleSubmit} id="task-form">
 
             <label htmlFor="item">Create Task</label>
@@ -67,13 +107,26 @@ export default function TaskGenerator() {
                
             </form>
 
-            <Droppable droppableId="ROOT" type="group" id="drop-container">
+            {/*DragDropContext is like the senario for the dragging
+        and dropping elements */}
+        <DragDropContext onDragEnd={handleDragDrop}> {/*See top of page*/}
+            {/* Drobbale elements are the containers for where elements
+            can be dropped, they must have a droppableID which is used in
+            the source and destination of the results of each drag event
+            if we have multiple containers we can have different ID's to allowus
+            to keep track of where each element is. */}
+            <Droppable droppableId="ROOT" type="group">
+                {/*We must make a function that generates a droppable Div with the needed props destructed out
+                 */}
                 {(provided) => (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
-
+                    <div className="droppableContainerROOT" {...provided.droppableProps} ref={provided.innerRef}>
+                {/*Here we are mapping out Todos variable to draggable elements, notice we include the
+                index of each mapped element in the mapping which we will use for repositioning upon drag */}
                         {todos.map((todo, index) => ( 
                             <Draggable draggableId={todo.id} key={todo.id} index={index}>
-
+                {/*Within the draggable element we must also make a function that contains what the draggable element is,
+                in this case its our mapped Todos, like the droppable child was passed droppableProps, the draggable
+                children must be passed draggableProps */}
                                 {(provided) => (
                                     <div key={todo.id} id="todo-container"
                                      {...provided.dragHandleProps}
@@ -82,16 +135,17 @@ export default function TaskGenerator() {
                                         <div id="todo-textbox">
                                             <h1>{todo.title}</h1>
                                             <p>ID: {todo.id}</p>
-                                            <p>{index}</p>
+                                            <p>Index: {index}</p>
                                             <p>Complete by: {todo.timeLine}</p>
                                             <button onClick={() => deleteTask(todo.id)}>delete</button>
-                                        
                                         </div>
                                      </div>
                                       )}
 
                             </Draggable>  
                         ))}
+                {provided.placeholder} {/*This ensures that when an element is picked up
+                the parent container doesnt reduce its size due to the element being removed */}
 
                     </div>
             )}
@@ -100,6 +154,10 @@ export default function TaskGenerator() {
         </>
     )
 }
+
+
+
+
 
 /* 
 dragdropcontext:
