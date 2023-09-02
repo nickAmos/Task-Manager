@@ -22,8 +22,14 @@ export default function TaskGenerator() {
     }*/
     const handleDragDrop = (results) => {
         const {source, destination, type} = results;
-        {/* Destructuring parts of the results to create varibales out of */}
-        console.log(results);
+        {/* Destructuring parts of the results to create varibales out of `
+        console.log(`
+        Start DroppableID: ${source.droppableId}
+        Start Index: ${source.index}
+        End DroppableID: ${destination.droppableId} 
+        End Index: ${destination.index}
+                    `
+                    ); */}
 
         if (!destination) return;
 
@@ -32,15 +38,57 @@ export default function TaskGenerator() {
             {/*Essentially if the position of an element doesnt change at all return early
         to avoid upcoming logic */}
         
-        if (type === 'group') {
-            const reorderedTodos = [...todos];
-            const sourceIndex = source.index;
-            const destinationIndex = destination.index;
-            const [removedTodos] = reorderedTodos.splice(sourceIndex, 1);
-            reorderedTodos.splice(destinationIndex, 0, removedTodos);
+            let copyofTodos = [...todos];
+            let copyofTodosA = [...todosA]
+            let sourceIndex = source.index;
+            let sourceDrop = source.droppableId;
+            let destinationIndex = destination.index;
+            let destinationDrop = destination.droppableId;
+            
 
-            return setTodos(reorderedTodos);
-        }
+
+            if((source.droppableId === destination.droppableId) && (sourceDrop === 'ROOT')) {
+                const [removedTodo] = copyofTodos.splice(sourceIndex, 1);
+                copyofTodos.splice(destinationIndex, 0, removedTodo);
+                setTodos(copyofTodos);
+                console.log('1 fired');
+                return;
+            }
+
+            if((source.droppableId === destination.droppableId) && (sourceDrop === 'ContainerA')) {
+                const [removedTodo] = copyofTodosA.splice(sourceIndex, 1);
+                copyofTodosA.splice(destinationIndex, 0, removedTodo);
+                setTodos(copyofTodosA);
+                console.log('2 fired');
+                return;
+            }
+
+            if ( !(source.droppableId === destination.droppableId) && (destinationDrop === 'ContainerA')) {
+                const [removedTodo] = copyofTodos.splice(sourceIndex, 1);
+                copyofTodosA.splice(destinationIndex, 0, removedTodo);
+                copyofTodos.splice(sourceIndex, 1);
+                setTodos(copyofTodos);
+                setTodosA(copyofTodosA);
+                console.log('3 fired');
+                console.log("Items in Root:" + todos.length);
+                console.log("Items in ConA:" + todosA.length);
+                return;
+            }
+
+            if ( !(source.droppableId === destination.droppableId) && destination.droppableId === 'ROOT') {
+                const [removedTodo] = copyofTodosA.splice(sourceIndex, 1);
+                copyofTodos.splice(destinationIndex, 0, removedTodo);
+                copyofTodosA.splice(sourceIndex, 1);
+                setTodos(copyofTodos);
+                setTodosA(copyofTodosA);
+                console.log('4 fired');
+                console.log("Items in Root:" + todos.length);
+                console.log("Items in ConA:" + todosA.length);
+                return;
+            }
+
+            
+        
         {/*Above we are creating a copy of our Todos State and then using the index of both the 
     source of the element and its destination we are creating a varibale that holds the value of the 
 todo that was removed from one container and then altering our copy of the Todos array such that this
@@ -52,6 +100,7 @@ and setTodos to this new order.  */}
     const [newObject, setNewObject] = useState('');
     const [timeline, setTimeLine] = useState('');
     const [todos, setTodos] = useState([]);
+    const [todosA, setTodosA] = useState([]);
   
     function handleSubmit(e) {
         //prevent default cancles the refreshing of the page upon submission of the form. 
@@ -149,6 +198,34 @@ and setTodos to this new order.  */}
 
                     </div>
             )}
+            </Droppable>
+
+            <Droppable droppableId="ContainerA" type="group">
+                {(provided) => (
+                    <div className="ContainerA" {...provided.droppableProps} ref={provided.innerRef}>
+                        {todosA.map((todo, index) => (
+                            <Draggable draggableId={todo.id} key={todo.id} index={index} >
+                                {(provided) => (
+                                    <div key={todo.id} id="todo-container"
+                                     {...provided.dragHandleProps}
+                                     {...provided.draggableProps}
+                                     ref={provided.innerRef}>
+                                        <div id="todo-textbox">
+                                            <h1>{todo.title}</h1>
+                                            <p>ID: {todo.id}</p>
+                                            <p>Index: {index}</p>
+                                            <p>Complete by: {todo.timeLine}</p>
+                                            <button onClick={() => deleteTask(todo.id)}>delete</button>
+                                        </div>
+                                     </div>
+                                      )}
+
+                            </Draggable>
+                        ))}
+                        {provided.placeholder}
+                    </div>
+                )}
+             
             </Droppable>
         </DragDropContext>
         </>
