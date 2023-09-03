@@ -31,61 +31,74 @@ export default function TaskGenerator() {
                     `
                     ); */}
 
-        if (!destination) return;
-
-        if(source.droppableId === destination.droppableId && 
-            source.index === destination.index) return;
+        if (!(destination) || (source.droppableId === destination.droppableId && 
+            source.index === destination.index) ) return;
             {/*Essentially if the position of an element doesnt change at all return early
         to avoid upcoming logic */}
+
+        const sourceIndex = source.index;
+        const sourceDrop = source.droppableId;
+        const destinationIndex = destination.index;
+        const destinationDrop = destination.droppableId;
+        const copyofTodos = [...todos];
+        const copyofTodosA = [...todosA];
+        const copyofTodosB = [...todosB];
         
-            let copyofTodos = [...todos];
-            let copyofTodosA = [...todosA]
-            let sourceIndex = source.index;
-            let sourceDrop = source.droppableId;
-            let destinationIndex = destination.index;
-            let destinationDrop = destination.droppableId;
+
+
+        if (sourceDrop === 'ROOT') {
+            let [removed] = copyofTodos.splice(sourceIndex, 1);    
+            setTodos(copyofTodos);
+            if (destinationDrop === 'ROOT') {
+                copyofTodos.splice(destinationIndex, 0, removed);
+                setTodos(copyofTodos);
+            }
+            if (destinationDrop === 'ContainerA') {
+                copyofTodosA.splice(destinationIndex, 0, removed);
+                setTodosA(copyofTodosA);
+            }
+            if (destinationDrop === 'ContainerB') {
+                copyofTodosB.splice(destinationIndex, 0, removed);
+                setTodosB(copyofTodosB);
+            }
             
-
-
-            if((source.droppableId === destination.droppableId) && (sourceDrop === 'ROOT')) {
-                const [removedTodo] = copyofTodos.splice(sourceIndex, 1);
-                copyofTodos.splice(destinationIndex, 0, removedTodo);
+        } else if (sourceDrop === 'ContainerA') {
+            let [removed] = copyofTodosA.splice(sourceIndex,1);
+            setTodosA(copyofTodosA);
+            if (destinationDrop === 'ROOT') {
+                copyofTodos.splice(destinationIndex, 0, removed);
                 setTodos(copyofTodos);
-                console.log('1 fired');
-                return;
             }
-
-            if((source.droppableId === destination.droppableId) && (sourceDrop === 'ContainerA')) {
-                const [removedTodo] = copyofTodosA.splice(sourceIndex, 1);
-                copyofTodosA.splice(destinationIndex, 0, removedTodo);
-                setTodos(copyofTodosA);
-                console.log('2 fired');
-                return;
-            }
-
-            if ( !(source.droppableId === destination.droppableId) && (destinationDrop === 'ContainerA')) {
-                const [removedTodo] = copyofTodos.splice(sourceIndex, 1);
-                copyofTodosA.splice(destinationIndex, 0, removedTodo);
-                copyofTodos.splice(sourceIndex, 1);
-                setTodos(copyofTodos);
+            if (destinationDrop === 'ContainerA') {
+                copyofTodosA.splice(destinationIndex, 0, removed);
                 setTodosA(copyofTodosA);
-                console.log('3 fired');
-                console.log("Items in Root:" + todos.length);
-                console.log("Items in ConA:" + todosA.length);
-                return;
+            }
+            if (destinationDrop === 'ContainerB') {
+                copyofTodosB.splice(destinationIndex, 0, removed);
+                setTodosB(copyofTodosB);
             }
 
-            if ( !(source.droppableId === destination.droppableId) && destination.droppableId === 'ROOT') {
-                const [removedTodo] = copyofTodosA.splice(sourceIndex, 1);
-                copyofTodos.splice(destinationIndex, 0, removedTodo);
-                copyofTodosA.splice(sourceIndex, 1);
+        } else if (sourceDrop === 'ContainerB') {
+            let [removed] = copyofTodosB.splice(sourceIndex, 1);
+            setTodosB(copyofTodosB);
+            if (destinationDrop === 'ROOT') {
+                copyofTodos.splice(destinationIndex, 0, removed);
                 setTodos(copyofTodos);
-                setTodosA(copyofTodosA);
-                console.log('4 fired');
-                console.log("Items in Root:" + todos.length);
-                console.log("Items in ConA:" + todosA.length);
-                return;
             }
+            if (destinationDrop === 'ContainerA') {
+                copyofTodosA.splice(destinationIndex, 0, removed);
+                setTodosA(copyofTodosA);
+            }
+            if (destinationDrop === 'ContainerB') {
+                copyofTodosB.splice(destinationIndex, 0, removed);
+                setTodosB(copyofTodosB);
+            }
+        }
+
+        
+        
+        
+            
 
             
         
@@ -101,6 +114,7 @@ and setTodos to this new order.  */}
     const [timeline, setTimeLine] = useState('');
     const [todos, setTodos] = useState([]);
     const [todosA, setTodosA] = useState([]);
+    const [todosB, setTodosB] = useState([]);
   
     function handleSubmit(e) {
         //prevent default cancles the refreshing of the page upon submission of the form. 
@@ -227,6 +241,34 @@ and setTodos to this new order.  */}
                 )}
              
             </Droppable>
+
+            <Droppable droppableId="ContainerB" type="group">
+                {(provided) => (
+                    <div className="ContainerB" {...provided.droppableProps} ref={provided.innerRef}>
+                        {todosB.map((todo, index) => (
+                            <Draggable draggableId={todo.id} key={todo.id} index={index} >
+                                {(provided) => (
+                                    <div key={todo.id} id="todo-container"
+                                     {...provided.dragHandleProps}
+                                     {...provided.draggableProps}
+                                     ref={provided.innerRef}>
+                                        <div id="todo-textbox">
+                                            <h1>{todo.title}</h1>
+                                            <p>ID: {todo.id}</p>
+                                            <p>Index: {index}</p>
+                                            <p>Complete by: {todo.timeLine}</p>
+                                            <button onClick={() => deleteTask(todo.id)}>delete</button>
+                                        </div>
+                                     </div>
+                                      )}
+
+                            </Draggable>
+                        ))}
+                        {provided.placeholder}
+                    </div>
+                )}
+             
+            </Droppable>
         </DragDropContext>
         </>
     )
@@ -250,6 +292,48 @@ draggable:
 elements that can be dragged. 
 
 strict mode must be turned off for this to work. 
+OLD logic:
+if((source.droppableId === destination.droppableId) && (sourceDrop === 'ROOT')) {
+                const [removedTodo] = copyofTodos.splice(sourceIndex, 1);
+                copyofTodos.splice(destinationIndex, 0, removedTodo);
+                setTodos(copyofTodos);
+                console.log('1 fired');
+                return;
+            }
+
+            if((source.droppableId === destination.droppableId) && (sourceDrop === 'ContainerA')) {
+                const [removedTodo] = copyofTodosA.splice(sourceIndex, 1);
+                copyofTodosA.splice(destinationIndex, 0, removedTodo);
+                setTodos(copyofTodosA);
+                console.log('2 fired');
+                return;
+            }
+
+            if ( !(source.droppableId === destination.droppableId) && (destinationDrop === 'ContainerA')) {
+                const [removedTodo] = copyofTodos.splice(sourceIndex, 1);
+                copyofTodosA.splice(destinationIndex, 0, removedTodo);
+                copyofTodos.splice(sourceIndex, 1);
+                setTodos(copyofTodos);
+                setTodosA(copyofTodosA);
+                console.log('3 fired');
+                console.log("Items in Root:" + todos.length + "/" + copyofTodos.length);
+                console.log("Items in ConA:" + todosA.length + "/" + copyofTodosA.length);
+                console.log("removed item:" + removedTodo.id);
+                return;
+            }
+
+            if ( !(source.droppableId === destination.droppableId) && destination.droppableId === 'ROOT') {
+                const [removedTodo] = copyofTodosA.splice(sourceIndex, 1);
+                copyofTodos.splice(destinationIndex, 0, removedTodo);
+                copyofTodosA.splice(sourceIndex, 1);
+                setTodos(copyofTodos);
+                setTodosA(copyofTodosA);
+                console.log('4 fired');
+                console.log("Items in Root:" + todos.length + "/" + copyofTodos.length);
+                console.log("Items in ConA:" + todosA.length + "/" + copyofTodosA.length);
+                console.log("removed item:" + removedTodo.id);
+                return;
+            }
 
 
 
