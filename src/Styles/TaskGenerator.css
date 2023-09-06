@@ -39,7 +39,11 @@
     align-items: center;
     background-color: rgb(206, 206, 206);
     border-radius: 15px;
-    min-height: 90vh;
+    min-height: 80vh;
     height: auto;
     width: 30%;
+}
+
+:hover.Priority-Tasks, :hover.Daily-Tasks, :hover.Longterm-Tasks {
+    background-color: aquamarine;
 }

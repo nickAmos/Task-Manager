@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import '../Styles/TaskGenerator.css';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import 'semantic-ui-css/semantic.min.css'
+import Modal from '@mui/material/Modal';
+import { Icon } from "semantic-ui-react";
 
 export default function TaskGenerator() {
 
@@ -110,6 +115,21 @@ export default function TaskGenerator() {
     const [todosA, setTodosA] = useState([]);
     const [todosB, setTodosB] = useState([]);
     const [todosC, setTodosC] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [addTask, setAddTask] = useState(true);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+      };
   
     function handleSubmit(e) {
         //prevent default cancles the refreshing of the page upon submission of the form. 
@@ -128,34 +148,59 @@ export default function TaskGenerator() {
         //Below resets the values of the form input to empty strings.
         setNewObject('');
         setTimeLine('');
+        handleClose();
     }
+
+    useEffect(() => {
+        if (todos.length > 0) {
+            setAddTask(false);
+        } else {
+            setAddTask(true);
+        }
+    }, [todos])
 
 
     return(
         <>
-        
-            <form onSubmit={handleSubmit} id="task-form">
+            <div>
+                {addTask ? <Button onClick={handleOpen}>
+                    <p>Add Task</p>
+                    <Icon name="plus"/>
+                    </Button> : null}
+                    <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <form onSubmit={handleSubmit} id="task-form">
 
-            <label htmlFor="item">Create Task</label>
-            <input
-                    value={newObject}
-                    type="text"
-                    placeholder="type here"
-                    id="item"
-                    onChange={e => setNewObject(e.target.value)}
-                    />
-            <label htmlFor="timeline">Timeline</label>
-                <input
-                    value={timeline}
-                    type="text"
-                    placeholder="type here"
-                    onChange={e => setTimeLine(e.target.value)}
-                    id="timeline"
-                    />
+                                <label htmlFor="item">Create Task</label>
+                                <input
+                                        value={newObject}
+                                        type="text"
+                                        placeholder="type here"
+                                        id="item"
+                                        onChange={e => setNewObject(e.target.value)}
+                                        />
+                                <label htmlFor="timeline">Timeline</label>
+                                    <input
+                                        value={timeline}
+                                        type="text"
+                                        placeholder="type here"
+                                        onChange={e => setTimeLine(e.target.value)}
+                                        id="timeline"
+                                        />
+
+                                <input type="submit" value='submit'/> 
             
-            <input type="submit" value='submit'/> 
-               
-            </form>
+                            </form>
+                        </Box>
+                </Modal>
+        </div>
+
+
 
             <DragDropContext onDragEnd={handleDragDrop}> 
             <Droppable droppableId="SPAWN" type="group">
@@ -291,116 +336,3 @@ export default function TaskGenerator() {
 
 
 
-
-
-/* OLD droppables :
-
-        <DragDropContext onDragEnd={handleDragDrop}> {/*See top of page*/
-            /* Drobbale elements are the containers for where elements
-            can be dropped, they must have a droppableID which is used in
-            the source and destination of the results of each drag event
-            if we have multiple containers we can have different ID's to allowus
-            to keep track of where each element is. }
-            <Droppable droppableId="SPAWN" type="group">
-                {/*We must make a function that generates a droppable Div with the needed props destructed out
-                 }
-                {(provided) => (
-                    <div className="droppableContainerSPAWN" {...provided.droppableProps} ref={provided.innerRef}>
-                {/*Here we are mapping out Todos variable to draggable elements, notice we include the
-                index of each mapped element in the mapping which we will use for repositioning upon drag }
-                        {todos.map((todo, index) => ( 
-                            <Draggable draggableId={todo.id} key={todo.id} index={index}>
-                {/*Within the draggable element we must also make a function that contains what the draggable element is,
-                in this case its our mapped Todos, like the droppable child was passed droppableProps, the draggable
-                children must be passed draggableProps }
-                                {(provided) => (
-                                    <div key={todo.id} id="todo-container"
-                                     {...provided.dragHandleProps}
-                                     {...provided.draggableProps}
-                                     ref={provided.innerRef}>
-                                        <div id="todo-textbox">
-                                            <h1>{todo.title}</h1>
-                                            <p>ID: {todo.id}</p>
-                                            <p>Index: {index}</p>
-                                            <p>Complete by: {todo.timeLine}</p>
-                                            <button onClick={() => deleteTask(todo.id)}>delete</button>
-                                        </div>
-                                     </div>
-                                      )}
-
-                            </Draggable>  
-                        ))}
-                {provided.placeholder} {/*This ensures that when an element is picked up
-                the parent container doesnt reduce its size due to the element being removed }
-
-                    </div>
-            )}
-            </Droppable>
-
-            <Droppable droppableId="Priority-Tasks" type="group">
-                {(provided) => (
-                    <div className="Priority-Tasks" {...provided.droppableProps} ref={provided.innerRef}>
-                        {todosA.map((todo, index) => (
-                            <Draggable draggableId={todo.id} key={todo.id} index={index} >
-                                {(provided) => (
-                                    <div key={todo.id} id="todo-container"
-                                     {...provided.dragHandleProps}
-                                     {...provided.draggableProps}
-                                     ref={provided.innerRef}>
-                                        <div id="todo-textbox">
-                                            <h1>{todo.title}</h1>
-                                            <p>ID: {todo.id}</p>
-                                            <p>Index: {index}</p>
-                                            <p>Complete by: {todo.timeLine}</p>
-                                            <button onClick={() => deleteTask(todo.id)}>delete</button>
-                                        </div>
-                                     </div>
-                                      )}
-
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </div>
-                )}
-             
-            </Droppable>
-
-            <Droppable droppableId="Daily-Tasks" type="group">
-                {(provided) => (
-                    <div className="Daily-Tasks" {...provided.droppableProps} ref={provided.innerRef}>
-                        {todosB.map((todo, index) => (
-                            <Draggable draggableId={todo.id} key={todo.id} index={index} >
-                                {(provided) => (
-                                    <div key={todo.id} id="todo-container"
-                                     {...provided.dragHandleProps}
-                                     {...provided.draggableProps}
-                                     ref={provided.innerRef}>
-                                        <div id="todo-textbox">
-                                            <h1>{todo.title}</h1>
-                                            <p>ID: {todo.id}</p>
-                                            <p>Index: {index}</p>
-                                            <p>Complete by: {todo.timeLine}</p>
-                                            <button onClick={() => deleteTask(todo.id)}>delete</button>
-                                        </div>
-                                     </div>
-                                      )}
-
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </div>
-                )}
-             
-            </Droppable>
-        </DragDropContext>
-
-
-
-        delete button:
-        function deleteTask(id) {
-        setTodos(currentTodos => {
-            return currentTodos.filter(todo => todo.id !== id);
-        })
-
-    }
-*/
