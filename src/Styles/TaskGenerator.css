@@ -2,11 +2,11 @@
     border: 1px dotted black;
     border-radius: 5px;
     background-color: rgb(236, 247, 179) ;
-    width: 300px;
+    width: auto;
     
 }
 
-.droppableContainerROOT {
+.droppableContainerSPAWN {
     width: 50vw;
     background-color: mediumaquamarine;
     display: flex;
@@ -15,14 +15,31 @@
     flex-direction: column;
 }
 
-.ContainerA {
-    width: 50vw;
-    min-height: 30vh;
-    background-color: darkkhaki;
+.Priority-Tasks, .Daily-Tasks, .Longterm-Tasks {
+    width: 80%;
+    min-height: 90%;
+    height: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    background-color: rgb(238, 238, 238);
 }
 
-.ContainerB {
-    width: 50vw;
-    min-height: 30vh;
-    background-color: rgb(255, 14, 231);
+
+
+#task-category-flex {
+    display: flex;
+    flex-direction:row;
+    justify-content: space-around;
+    height: auto;
+}
+
+#priority-container, #daily-container, #longterm-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(206, 206, 206);
+    border-radius: 15px;
+    min-height: 90vh;
+    height: auto;
+    width: 30%;
 }
