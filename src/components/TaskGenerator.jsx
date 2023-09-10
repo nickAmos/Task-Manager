@@ -99,6 +99,7 @@ export default function TaskGenerator() {
     const [newObject, setNewObject] = useState('');
     const [timeline, setTimeLine] = useState('');
     const [tasktype, setTasktype] = useState('');
+    const [date, setDate] = useState('');
 
     const [todos, setTodos] = useState([]);
     const [todosA, setTodosA] = useState([]);
@@ -129,26 +130,28 @@ export default function TaskGenerator() {
         //The currentObject below is just the empty [object] defined by the 'todos' state.
         // it is being set in this function
         if(tasktype === 'Daily') {
-            setTodosA(currentObject => {
-                return [
-                    ...currentObject, 
-                    {id: crypto.randomUUID(),
-                    title: newObject,
-                    timeLine: timeline,
-                    taskType: tasktype
-                },
-                ]
-            }) 
-            
-        }
-        if(tasktype === 'Priority') {
             setTodosB(currentObject => {
                 return [
                     ...currentObject, 
                     {id: crypto.randomUUID(),
                     title: newObject,
                     timeLine: timeline,
-                    taskType: tasktype
+                    taskType: tasktype,
+                    due: date
+                },
+                ]
+            }) 
+            
+        }
+        if(tasktype === 'Priority') {
+            setTodosA(currentObject => {
+                return [
+                    ...currentObject, 
+                    {id: crypto.randomUUID(),
+                    title: newObject,
+                    timeLine: timeline,
+                    taskType: tasktype,
+                    due: date
                 },
                 ]
             }) 
@@ -160,7 +163,8 @@ export default function TaskGenerator() {
                     {id: crypto.randomUUID(),
                     title: newObject,
                     timeLine: timeline,
-                    taskType: tasktype
+                    taskType: tasktype,
+                    due: date
                 },
                 ]
             }) 
@@ -175,14 +179,20 @@ export default function TaskGenerator() {
 
    
 
+function deleteTask(id) {
+    setTodosA(currentTasks => {
+        return currentTasks.filter(todo => todo.id !== id); 
+    })
+}
 
-    useEffect(() => {
-        if (todos.length > 0) {
-            setAddTask(false);
-        } else {
-            setAddTask(true);
-        }
-    }, [todos])
+function deleteTaskLong(id) {
+    setTodosC(currentTasks => {
+        return currentTasks.filter(todo => todo.id !== id); 
+    })
+}
+
+
+
 
 
     return(
@@ -209,7 +219,7 @@ export default function TaskGenerator() {
                             <form onSubmit={handleSubmit} id="task-form">
 
                                 
-                                <input
+                                <input required
                                         value={newObject}
                                         type="text"
                                         placeholder="Task Name"
@@ -217,7 +227,7 @@ export default function TaskGenerator() {
                                         onChange={e => setNewObject(e.target.value)}
                                         />
 
-                                    
+                                <input type="date" onChange={e => setDate(e.target.value)} />
 
                                 
                                     <input
@@ -228,8 +238,8 @@ export default function TaskGenerator() {
                                         id="timeline"
                                         />
                                 <div class="ui buttons">
-                                        <button value='Daily' onClick={e => {setTasktype(e.target.value);}} class="ui red basic button">Daily</button>
                                         <button value='Priority' onClick={e => {setTasktype(e.target.value);}} class="ui blue basic button">Priority</button>
+                                        <button value='Daily' onClick={e => {setTasktype(e.target.value);}} class="ui red basic button">Daily</button>
                                         <button value='Longterm' onClick={e => {setTasktype(e.target.value);}} class="ui green basic button">Long-Term</button>
                                 </div> 
                             </form>
@@ -258,7 +268,8 @@ export default function TaskGenerator() {
                                                 <p>ID: {todo.id}</p>
                                                 <p>Index: {index}</p>
                                                 <p>task type: {todo.taskType}</p>
-                                                <p>Complete by: {todo.timeLine}</p>
+                                                <p>Due: {todo.due}</p>
+                                                <button onClick={() => deleteTask(todo.id)}>Complete</button>
                                             </div>
                                         </div>
                                         )}
@@ -288,7 +299,8 @@ export default function TaskGenerator() {
                                                 <p>ID: {todo.id}</p>
                                                 <p>Index: {index}</p>
                                                 <p>task type: {todo.taskType}</p>
-                                                <p>Complete by: {todo.timeLine}</p>
+                                                <p>Due: {todo.due}</p>
+                                                
                                                 </div>
                                         </div>
                                         )}
@@ -318,7 +330,8 @@ export default function TaskGenerator() {
                                                 <p>ID: {todo.id}</p>
                                                 <p>Index: {index}</p>
                                                 <p>task type: {todo.taskType}</p>
-                                                <p>Complete by: {todo.timeLine}</p>
+                                                <p>Due: {todo.due}</p>
+                                                <button onClick={() => deleteTaskLong(todo.id)}>Complete</button>
                                                 </div>
                                         </div>
                                         )}
