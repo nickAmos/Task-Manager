@@ -22,45 +22,16 @@ export default function TaskGenerator() {
                     const sourceDrop = source.droppableId;
                     const destinationIndex = destination.index;
                     const destinationDrop = destination.droppableId;
-                    const copyofTodos = [...todos];
                     const copyofTodosA = [...todosA];
                     const copyofTodosB = [...todosB];
                     const copyofTodosC = [...todosC];
                     const copyofTodosD = [...todosD];
          
 
-        if (sourceDrop === 'SPAWN') {
-                let [removed] = copyofTodos.splice(sourceIndex, 1);    
-                setTodos(copyofTodos);
-                if (destinationDrop === 'SPAWN') {
-                    copyofTodos.splice(destinationIndex, 0, removed);
-                    setTodos(copyofTodos);
-                }
-                if (destinationDrop === 'Priority-Tasks') {
-                    copyofTodosA.splice(destinationIndex, 0, removed);
-                    setTodosA(copyofTodosA);
-                }
-                if (destinationDrop === 'Daily-Tasks') {
-                    copyofTodosB.splice(destinationIndex, 0, removed);
-                    setTodosB(copyofTodosB);
-                }
-                if (destinationDrop === 'Longterm-Tasks') {
-                    copyofTodosC.splice(destinationIndex, 0, removed);
-                    setTodosC(copyofTodosC);
-                }
-                if (destinationDrop === 'Trash') {
-                    copyofTodosD.splice(destinationIndex, 0, removed);
-                    setTodosD(copyofTodosD);
-                    setDeletedItems((item) => item + 1);
-                }
                 
-            } else if (sourceDrop === 'Priority-Tasks') {
+            if (sourceDrop === 'Priority-Tasks') {
                 let [removed] = copyofTodosA.splice(sourceIndex,1);
                 setTodosA(copyofTodosA);
-                if (destinationDrop === 'SPAWN') {
-                    copyofTodos.splice(destinationIndex, 0, removed);
-                    setTodos(copyofTodos);
-                }
                 if (destinationDrop === 'Priority-Tasks') {
                     copyofTodosA.splice(destinationIndex, 0, removed);
                     setTodosA(copyofTodosA);
@@ -73,7 +44,7 @@ export default function TaskGenerator() {
                     copyofTodosC.splice(destinationIndex, 0, removed);
                     setTodosC(copyofTodosC);
                 }
-                if (destinationDrop === 'Trash') {
+                if (destinationDrop === 'Archive') {
                     copyofTodosD.splice(destinationIndex, 0, removed);
                     setTodosD(copyofTodosD);
                     setDeletedItems((item) => item + 1);
@@ -82,10 +53,6 @@ export default function TaskGenerator() {
             } else if (sourceDrop === 'Daily-Tasks') {
                 let [removed] = copyofTodosB.splice(sourceIndex, 1);
                 setTodosB(copyofTodosB);
-                if (destinationDrop === 'SPAWN') {
-                    copyofTodos.splice(destinationIndex, 0, removed);
-                    setTodos(copyofTodos);
-                }
                 if (destinationDrop === 'Priority-Tasks') {
                     copyofTodosA.splice(destinationIndex, 0, removed);
                     setTodosA(copyofTodosA);
@@ -98,7 +65,7 @@ export default function TaskGenerator() {
                     copyofTodosC.splice(destinationIndex, 0, removed);
                     setTodosC(copyofTodosC);
                 }
-                if (destinationDrop === 'Trash') {
+                if (destinationDrop === 'Archive') {
                     copyofTodosD.splice(destinationIndex, 0, removed);
                     setTodosD(copyofTodosD);
                     setDeletedItems((item) => item + 1);
@@ -106,10 +73,6 @@ export default function TaskGenerator() {
             } else if (sourceDrop === 'Longterm-Tasks') {
                 let [removed] = copyofTodosC.splice(sourceIndex, 1);
                 setTodosC(copyofTodosC);
-                if (destinationDrop === 'SPAWN') {
-                    copyofTodos.splice(destinationIndex, 0, removed);
-                    setTodos(copyofTodos);
-                }
                 if (destinationDrop === 'Priority-Tasks') {
                     copyofTodosA.splice(destinationIndex, 0, removed);
                     setTodosA(copyofTodosA);
@@ -122,7 +85,7 @@ export default function TaskGenerator() {
                     copyofTodosC.splice(destinationIndex, 0, removed);
                     setTodosC(copyofTodosC);
                 }
-                if (destinationDrop === 'Trash') {
+                if (destinationDrop === 'Archive') {
                     copyofTodosD.splice(destinationIndex, 0, removed);
                     setTodosD(copyofTodosD);
                     setDeletedItems((item) => item + 1);
@@ -135,11 +98,14 @@ export default function TaskGenerator() {
 
     const [newObject, setNewObject] = useState('');
     const [timeline, setTimeLine] = useState('');
+    const [tasktype, setTasktype] = useState('');
+
     const [todos, setTodos] = useState([]);
     const [todosA, setTodosA] = useState([]);
     const [todosB, setTodosB] = useState([]);
     const [todosC, setTodosC] = useState([]);
     const [todosD, setTodosD] = useState([]);
+
     const [deletedItems, setDeletedItems] = useState(0);
     const [open, setOpen] = useState(false);
     const [addTask, setAddTask] = useState(true);
@@ -162,20 +128,53 @@ export default function TaskGenerator() {
         e.preventDefault()
         //The currentObject below is just the empty [object] defined by the 'todos' state.
         // it is being set in this function
-        setTodos(currentObject => {
-            return [
-                ...currentObject, 
-                {id: crypto.randomUUID(),
-                title: newObject,
-                timeLine: timeline,
-            },
-            ]
-        }) 
-        //Below resets the values of the form input to empty strings.
-        setNewObject('');
-        setTimeLine('');
-        handleClose();
+        if(tasktype === 'Daily') {
+            setTodosA(currentObject => {
+                return [
+                    ...currentObject, 
+                    {id: crypto.randomUUID(),
+                    title: newObject,
+                    timeLine: timeline,
+                    taskType: tasktype
+                },
+                ]
+            }) 
+            
+        }
+        if(tasktype === 'Priority') {
+            setTodosB(currentObject => {
+                return [
+                    ...currentObject, 
+                    {id: crypto.randomUUID(),
+                    title: newObject,
+                    timeLine: timeline,
+                    taskType: tasktype
+                },
+                ]
+            }) 
+        }
+        if(tasktype === 'Longterm') {
+            setTodosC(currentObject => {
+                return [
+                    ...currentObject, 
+                    {id: crypto.randomUUID(),
+                    title: newObject,
+                    timeLine: timeline,
+                    taskType: tasktype
+                },
+                ]
+            }) 
+        }
+        
+
+    setNewObject('');
+    setTimeLine('');
+    setTasktype('');
+    handleClose();
     }
+
+   
+
 
     useEffect(() => {
         if (todos.length > 0) {
@@ -209,15 +208,18 @@ export default function TaskGenerator() {
                         <Box sx={style}>
                             <form onSubmit={handleSubmit} id="task-form">
 
-                                <label htmlFor="item">Create Task</label>
+                                
                                 <input
                                         value={newObject}
                                         type="text"
-                                        placeholder="type here"
+                                        placeholder="Task Name"
                                         id="item"
                                         onChange={e => setNewObject(e.target.value)}
                                         />
-                                <label htmlFor="timeline">Timeline</label>
+
+                                    
+
+                                
                                     <input
                                         value={timeline}
                                         type="text"
@@ -225,9 +227,11 @@ export default function TaskGenerator() {
                                         onChange={e => setTimeLine(e.target.value)}
                                         id="timeline"
                                         />
-
-                                <input type="submit" value='submit'/> 
-            
+                                <div class="ui buttons">
+                                        <button value='Daily' onClick={e => {setTasktype(e.target.value);}} class="ui red basic button">Daily</button>
+                                        <button value='Priority' onClick={e => {setTasktype(e.target.value);}} class="ui blue basic button">Priority</button>
+                                        <button value='Longterm' onClick={e => {setTasktype(e.target.value);}} class="ui green basic button">Long-Term</button>
+                                </div> 
                             </form>
                         </Box>
                 </Modal>
@@ -236,36 +240,6 @@ export default function TaskGenerator() {
 
 
             <DragDropContext onDragEnd={handleDragDrop}> 
-            <Droppable droppableId="SPAWN" type="group">
-                
-                {(provided) => (
-                    <div className="droppableContainerSPAWN" {...provided.droppableProps} ref={provided.innerRef}>
-                
-                        {todos.map((todo, index) => ( 
-                            <Draggable draggableId={todo.id} key={todo.id} index={index}>
-                
-                                {(provided) => (
-                                    <div key={todo.id} id="todo-container"
-                                     {...provided.dragHandleProps}
-                                     {...provided.draggableProps}
-                                     ref={provided.innerRef}>
-                                        <div id="todo-textbox">
-                                            <h1>{todo.title}</h1>
-                                            <p>ID: {todo.id}</p>
-                                            <p>Index: {index}</p>
-                                            <p>Complete by: {todo.timeLine}</p>
-                                        </div>
-                                     </div>
-                                      )}
-
-                            </Draggable>  
-                        ))}
-                {provided.placeholder} 
-
-                    </div>
-            )}
-            </Droppable>
-
 
             <div id="task-category-flex">
                 <div id="priority-container">                        
@@ -283,6 +257,7 @@ export default function TaskGenerator() {
                                                 <h1>{todo.title}</h1>
                                                 <p>ID: {todo.id}</p>
                                                 <p>Index: {index}</p>
+                                                <p>task type: {todo.taskType}</p>
                                                 <p>Complete by: {todo.timeLine}</p>
                                             </div>
                                         </div>
@@ -312,6 +287,7 @@ export default function TaskGenerator() {
                                                 <h1>{todo.title}</h1>
                                                 <p>ID: {todo.id}</p>
                                                 <p>Index: {index}</p>
+                                                <p>task type: {todo.taskType}</p>
                                                 <p>Complete by: {todo.timeLine}</p>
                                                 </div>
                                         </div>
@@ -341,6 +317,7 @@ export default function TaskGenerator() {
                                                 <h1>{todo.title}</h1>
                                                 <p>ID: {todo.id}</p>
                                                 <p>Index: {index}</p>
+                                                <p>task type: {todo.taskType}</p>
                                                 <p>Complete by: {todo.timeLine}</p>
                                                 </div>
                                         </div>
@@ -355,18 +332,30 @@ export default function TaskGenerator() {
                 </Droppable>
                 </div> 
             </div> 
-             <div className="trashContainer">
+             <div className="RemovalContainer">
                                           
+                <Droppable droppableId="Archive" type="group">
+                    
+                    {(provided) => (
+                        <div className="droppableContainerArchive" 
+                        {...provided.droppableProps} ref={provided.innerRef}>
+                            <p>Archived tasks: {deletedItems}</p>
+
+                        </div>
+                )}
+                </Droppable>
+
                 <Droppable droppableId="Trash" type="group">
                     
                     {(provided) => (
                         <div className="droppableContainerTrash" 
                         {...provided.droppableProps} ref={provided.innerRef}>
-                            <p>deleted items: {deletedItems}</p>
+                            Delete
 
                         </div>
                 )}
                 </Droppable>
+
             </div> 
 
         </DragDropContext>

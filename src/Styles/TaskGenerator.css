@@ -44,7 +44,7 @@
     width: 30%;
 }
 
-.trashContainer {
+.RemovalContainer {
     width: 100vw;
     height: 10vh;
     background-color: oldlace;
@@ -53,7 +53,7 @@
     align-items: center;
 }
 
-.droppableContainerTrash {
+.droppableContainerTrash, .droppableContainerArchive {
     width: 80%;
     height: 80%;
     border-radius: 15px;
@@ -85,7 +85,7 @@
     
 }
 
-:hover.droppableContainerTrash {
+:hover.droppableContainerTrash, :hover.droppableContainerArchive {
     background-color: rgb(255, 144, 144);
 }
 
