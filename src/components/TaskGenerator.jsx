@@ -26,6 +26,8 @@ export default function TaskGenerator() {
                     const copyofTodosA = [...todosA];
                     const copyofTodosB = [...todosB];
                     const copyofTodosC = [...todosC];
+                    const copyofTodosD = [...todosD];
+         
 
         if (sourceDrop === 'SPAWN') {
                 let [removed] = copyofTodos.splice(sourceIndex, 1);    
@@ -45,6 +47,11 @@ export default function TaskGenerator() {
                 if (destinationDrop === 'Longterm-Tasks') {
                     copyofTodosC.splice(destinationIndex, 0, removed);
                     setTodosC(copyofTodosC);
+                }
+                if (destinationDrop === 'Trash') {
+                    copyofTodosD.splice(destinationIndex, 0, removed);
+                    setTodosD(copyofTodosD);
+                    setDeletedItems((item) => item + 1);
                 }
                 
             } else if (sourceDrop === 'Priority-Tasks') {
@@ -66,6 +73,11 @@ export default function TaskGenerator() {
                     copyofTodosC.splice(destinationIndex, 0, removed);
                     setTodosC(copyofTodosC);
                 }
+                if (destinationDrop === 'Trash') {
+                    copyofTodosD.splice(destinationIndex, 0, removed);
+                    setTodosD(copyofTodosD);
+                    setDeletedItems((item) => item + 1);
+                }
 
             } else if (sourceDrop === 'Daily-Tasks') {
                 let [removed] = copyofTodosB.splice(sourceIndex, 1);
@@ -86,6 +98,11 @@ export default function TaskGenerator() {
                     copyofTodosC.splice(destinationIndex, 0, removed);
                     setTodosC(copyofTodosC);
                 }
+                if (destinationDrop === 'Trash') {
+                    copyofTodosD.splice(destinationIndex, 0, removed);
+                    setTodosD(copyofTodosD);
+                    setDeletedItems((item) => item + 1);
+                }
             } else if (sourceDrop === 'Longterm-Tasks') {
                 let [removed] = copyofTodosC.splice(sourceIndex, 1);
                 setTodosC(copyofTodosC);
@@ -105,7 +122,14 @@ export default function TaskGenerator() {
                     copyofTodosC.splice(destinationIndex, 0, removed);
                     setTodosC(copyofTodosC);
                 }
+                if (destinationDrop === 'Trash') {
+                    copyofTodosD.splice(destinationIndex, 0, removed);
+                    setTodosD(copyofTodosD);
+                    setDeletedItems((item) => item + 1);
+                }
             }
+
+            
         }
     
 
@@ -115,6 +139,8 @@ export default function TaskGenerator() {
     const [todosA, setTodosA] = useState([]);
     const [todosB, setTodosB] = useState([]);
     const [todosC, setTodosC] = useState([]);
+    const [todosD, setTodosD] = useState([]);
+    const [deletedItems, setDeletedItems] = useState(0);
     const [open, setOpen] = useState(false);
     const [addTask, setAddTask] = useState(true);
     const handleOpen = () => setOpen(true);
@@ -163,10 +189,17 @@ export default function TaskGenerator() {
     return(
         <>
             <div>
-                {addTask ? <Button onClick={handleOpen}>
-                    <p>Add Task</p>
-                    <Icon name="plus"/>
+                <div className="addtask-container">
+                {addTask ? 
+                    <Button onClick={handleOpen}>
+                        <div id="button-container">
+                            <div>Add Task</div>
+                            <Icon name="plus" size="large"/>
+                        </div>
                     </Button> : null}
+            </div>
+
+
                     <Modal
                     open={open}
                     onClose={handleClose}
@@ -322,6 +355,20 @@ export default function TaskGenerator() {
                 </Droppable>
                 </div> 
             </div> 
+             <div className="trashContainer">
+                                          
+                <Droppable droppableId="Trash" type="group">
+                    
+                    {(provided) => (
+                        <div className="droppableContainerTrash" 
+                        {...provided.droppableProps} ref={provided.innerRef}>
+                            <p>deleted items: {deletedItems}</p>
+
+                        </div>
+                )}
+                </Droppable>
+            </div> 
+
         </DragDropContext>
         
             
