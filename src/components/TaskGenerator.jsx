@@ -100,8 +100,10 @@ export default function TaskGenerator() {
     const [timeline, setTimeLine] = useState('');
     const [tasktype, setTasktype] = useState('');
     const [date, setDate] = useState('');
+    const [notes, setNotes] = useState('');
 
-    const [todos, setTodos] = useState([]);
+
+    
     const [todosA, setTodosA] = useState([]);
     const [todosB, setTodosB] = useState([]);
     const [todosC, setTodosC] = useState([]);
@@ -112,6 +114,7 @@ export default function TaskGenerator() {
     const [addTask, setAddTask] = useState(true);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    
     const style = {
         position: 'absolute',
         top: '50%',
@@ -137,7 +140,11 @@ export default function TaskGenerator() {
                     title: newObject,
                     timeLine: timeline,
                     taskType: tasktype,
-                    due: date
+                    due: date,
+                    completed: false,
+                    streak: 0,
+                    notes: notes
+                    
                 },
                 ]
             }) 
@@ -151,7 +158,9 @@ export default function TaskGenerator() {
                     title: newObject,
                     timeLine: timeline,
                     taskType: tasktype,
-                    due: date
+                    due: date,
+                    notes: notes
+                    
                 },
                 ]
             }) 
@@ -164,7 +173,8 @@ export default function TaskGenerator() {
                     title: newObject,
                     timeLine: timeline,
                     taskType: tasktype,
-                    due: date
+                    due: date,
+                    notes: notes
                 },
                 ]
             }) 
@@ -174,6 +184,7 @@ export default function TaskGenerator() {
     setNewObject('');
     setTimeLine('');
     setTasktype('');
+    setNotes('');
     handleClose();
     }
 
@@ -191,8 +202,21 @@ function deleteTaskLong(id) {
     })
 }
 
-
-
+function completeDaily(id, completed, streak) {
+    
+    setTodosB(currentTasks => {
+        return currentTasks.map(todo => {
+            if (todo.id === id) {
+                if (completed === true) {
+                    streak += 1
+                }
+                
+                return {...todo, completed, streak}
+            }
+            return todo;
+        })
+    })
+}
 
 
     return(
@@ -219,7 +243,7 @@ function deleteTaskLong(id) {
                             <form onSubmit={handleSubmit} id="task-form">
 
                                 
-                                <input required
+                                <input 
                                         value={newObject}
                                         type="text"
                                         placeholder="Task Name"
@@ -237,6 +261,9 @@ function deleteTaskLong(id) {
                                         onChange={e => setTimeLine(e.target.value)}
                                         id="timeline"
                                         />
+
+                                <input type="text" placeholder="Add notes" value={notes}
+                                id="notes" onChange={e => setNotes(e.target.value)}/>
                                 <div class="ui buttons">
                                         <button value='Priority' onClick={e => {setTasktype(e.target.value);}} class="ui blue basic button">Priority</button>
                                         <button value='Daily' onClick={e => {setTasktype(e.target.value);}} class="ui red basic button">Daily</button>
@@ -245,6 +272,8 @@ function deleteTaskLong(id) {
                             </form>
                         </Box>
                 </Modal>
+
+                
         </div>
 
 
@@ -259,19 +288,23 @@ function deleteTaskLong(id) {
                             {todosA.map((todo, index) => (
                                 <Draggable draggableId={todo.id} key={todo.id} index={index} >
                                     {(provided) => (
+                                        <>
                                         <div key={todo.id} id="todo-container"
                                         {...provided.dragHandleProps}
                                         {...provided.draggableProps}
-                                        ref={provided.innerRef}>
+                                        ref={provided.innerRef}> 
                                             <div id="todo-textbox">
                                                 <h1>{todo.title}</h1>
                                                 <p>ID: {todo.id}</p>
                                                 <p>Index: {index}</p>
                                                 <p>task type: {todo.taskType}</p>
                                                 <p>Due: {todo.due}</p>
+                                                <p>Notes: {todo.notes}</p>
                                                 <button onClick={() => deleteTask(todo.id)}>Complete</button>
+                                                
                                             </div>
                                         </div>
+                                        </>
                                         )}
 
                                 </Draggable>
@@ -294,13 +327,16 @@ function deleteTaskLong(id) {
                                         {...provided.dragHandleProps}
                                         {...provided.draggableProps}
                                         ref={provided.innerRef}>
-                                            <div id="todo-textbox">
+                                            <div id="todo-textbox-daily">
                                                 <h1>{todo.title}</h1>
                                                 <p>ID: {todo.id}</p>
                                                 <p>Index: {index}</p>
                                                 <p>task type: {todo.taskType}</p>
                                                 <p>Due: {todo.due}</p>
-                                                
+                                                <p>Streak: {todo.streak}</p>
+                                                <p>Notes: {todo.notes}</p>
+                                                <input type="checkbox" checked={todo.completed}
+                                                        onChange={e => completeDaily(todo.id, e.target.checked, todo.streak)}/>
                                                 </div>
                                         </div>
                                         )}
@@ -331,6 +367,7 @@ function deleteTaskLong(id) {
                                                 <p>Index: {index}</p>
                                                 <p>task type: {todo.taskType}</p>
                                                 <p>Due: {todo.due}</p>
+                                                <p>Notes: {todo.notes}</p>
                                                 <button onClick={() => deleteTaskLong(todo.id)}>Complete</button>
                                                 </div>
                                         </div>

@@ -24,6 +24,16 @@
     background-color: rgb(238, 238, 238);
 }
 
+#todo-textbox-daily {
+    background-color: red;
+}
+
+#todo-textbox-daily:has(input:checked)  {
+    background-color: greenyellow;
+}
+
+
+
 
 
 #task-category-flex {
