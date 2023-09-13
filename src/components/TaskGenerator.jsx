@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import 'semantic-ui-css/semantic.min.css'
 import Modal from '@mui/material/Modal';
 import { Icon } from "semantic-ui-react";
+import moment from "moment";
 
 export default function TaskGenerator() {
 
@@ -101,6 +102,21 @@ export default function TaskGenerator() {
     const [tasktype, setTasktype] = useState('');
     const [date, setDate] = useState('');
     const [notes, setNotes] = useState('');
+    const [seeNotes, setSeeNotes] = useState(false);
+    const [noteButton, setNoteButton] = useState(false);
+    
+    const [dateDisplay ,setDateDisplay] = useState(new Date());
+    
+    useEffect(() => {
+        var timer = setInterval(()=>setDateDisplay(new Date()), 1000 )
+        return function cleanup() {
+            clearInterval(timer)
+        }
+    
+    });
+
+
+    
 
 
     
@@ -108,6 +124,7 @@ export default function TaskGenerator() {
     const [todosB, setTodosB] = useState([]);
     const [todosC, setTodosC] = useState([]);
     const [todosD, setTodosD] = useState([]);
+
 
     const [deletedItems, setDeletedItems] = useState(0);
     const [open, setOpen] = useState(false);
@@ -159,6 +176,7 @@ export default function TaskGenerator() {
                     timeLine: timeline,
                     taskType: tasktype,
                     due: date,
+                    streak: 0,
                     notes: notes
                     
                 },
@@ -174,6 +192,7 @@ export default function TaskGenerator() {
                     timeLine: timeline,
                     taskType: tasktype,
                     due: date,
+                    streak: 0,
                     notes: notes
                 },
                 ]
@@ -223,6 +242,11 @@ function completeDaily(id, completed, streak) {
         <>
             <div>
                 <div className="addtask-container">
+                <div>
+            <p> Time : {dateDisplay.toLocaleTimeString()}  Date : {dateDisplay.toLocaleDateString()}</p>
+          
+
+        </div>
                 {addTask ? 
                     <Button onClick={handleOpen}>
                         <div id="button-container">
@@ -299,7 +323,9 @@ function completeDaily(id, completed, streak) {
                                                 <p>Index: {index}</p>
                                                 <p>task type: {todo.taskType}</p>
                                                 <p>Due: {todo.due}</p>
-                                                <p>Notes: {todo.notes}</p>
+                                                {seeNotes ? <p>{todo.notes}</p> : null}
+                                                <button onClick={() => {setSeeNotes(!seeNotes)
+                                                setNoteButton(!noteButton)}}>{!noteButton ? 'See Notes' : 'Hide'}</button>
                                                 <button onClick={() => deleteTask(todo.id)}>Complete</button>
                                                 
                                             </div>
@@ -334,7 +360,9 @@ function completeDaily(id, completed, streak) {
                                                 <p>task type: {todo.taskType}</p>
                                                 <p>Due: {todo.due}</p>
                                                 <p>Streak: {todo.streak}</p>
-                                                <p>Notes: {todo.notes}</p>
+                                                {seeNotes ? <p>{todo.notes}</p> : null}
+                                                <button onClick={() => {setSeeNotes(!seeNotes)
+                                                setNoteButton(!noteButton)}}>{!noteButton ? 'See Notes' : 'Hide'}</button>
                                                 <input type="checkbox" checked={todo.completed}
                                                         onChange={e => completeDaily(todo.id, e.target.checked, todo.streak)}/>
                                                 </div>
@@ -367,7 +395,9 @@ function completeDaily(id, completed, streak) {
                                                 <p>Index: {index}</p>
                                                 <p>task type: {todo.taskType}</p>
                                                 <p>Due: {todo.due}</p>
-                                                <p>Notes: {todo.notes}</p>
+                                                {seeNotes ? <p>{todo.notes}</p> : null}
+                                                <button onClick={() => {setSeeNotes(!seeNotes)
+                                                setNoteButton(!noteButton)}}>{!noteButton ? 'See Notes' : 'Hide'}</button>
                                                 <button onClick={() => deleteTaskLong(todo.id)}>Complete</button>
                                                 </div>
                                         </div>
@@ -422,3 +452,11 @@ function completeDaily(id, completed, streak) {
 
 
 
+/*  
+Things to add:
+    - framer motion animations to cards when they are completed  extra:: add dragging animations??
+    - completed todos history (React Router) ++ Undo button that places it back inside array. 
+    - deleted todos  ""
+    - local storage preservation. 
+    - weather updates
+*/
