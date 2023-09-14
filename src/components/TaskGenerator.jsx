@@ -6,9 +6,10 @@ import Button from '@mui/material/Button';
 import 'semantic-ui-css/semantic.min.css'
 import Modal from '@mui/material/Modal';
 import { Icon } from "semantic-ui-react";
-import moment from "moment";
+import { Link } from "react-router-dom";
 
-export default function TaskGenerator() {
+
+export default function TaskGenerator( {archiveTask} ) {
 
    
         
@@ -40,7 +41,7 @@ export default function TaskGenerator() {
                 if (destinationDrop === 'Daily-Tasks') {
                     copyofTodosB.splice(destinationIndex, 0, removed);
                     setTodosB(copyofTodosB);
-                } 
+                }
                 if (destinationDrop === 'Longterm-Tasks') {
                     copyofTodosC.splice(destinationIndex, 0, removed);
                     setTodosC(copyofTodosC);
@@ -48,6 +49,7 @@ export default function TaskGenerator() {
                 if (destinationDrop === 'Archive') {
                     copyofTodosD.splice(destinationIndex, 0, removed);
                     setTodosD(copyofTodosD);
+                    archiveTask(todosD);
                     setDeletedItems((item) => item + 1);
                 }
 
@@ -69,6 +71,7 @@ export default function TaskGenerator() {
                 if (destinationDrop === 'Archive') {
                     copyofTodosD.splice(destinationIndex, 0, removed);
                     setTodosD(copyofTodosD);
+                    archiveTask(todosD);
                     setDeletedItems((item) => item + 1);
                 }
             } else if (sourceDrop === 'Longterm-Tasks') {
@@ -89,6 +92,7 @@ export default function TaskGenerator() {
                 if (destinationDrop === 'Archive') {
                     copyofTodosD.splice(destinationIndex, 0, removed);
                     setTodosD(copyofTodosD);
+                    archiveTask(todosD);
                     setDeletedItems((item) => item + 1);
                 }
             }
@@ -114,12 +118,6 @@ export default function TaskGenerator() {
         }
     
     });
-
-
-    
-
-
-    
     const [todosA, setTodosA] = useState([]);
     const [todosB, setTodosB] = useState([]);
     const [todosC, setTodosC] = useState([]);
@@ -239,7 +237,10 @@ function completeDaily(id, completed, streak) {
 
 
     return(
+        
         <>
+     
+            
             <div>
                 <div className="addtask-container">
                 <div>
@@ -326,7 +327,9 @@ function completeDaily(id, completed, streak) {
                                                 {seeNotes ? <p>{todo.notes}</p> : null}
                                                 <button onClick={() => {setSeeNotes(!seeNotes)
                                                 setNoteButton(!noteButton)}}>{!noteButton ? 'See Notes' : 'Hide'}</button>
-                                                <button onClick={() => deleteTask(todo.id)}>Complete</button>
+                                                <button onClick={() => {deleteTask(todo.id)
+                                                                        archiveTask(todo)
+                                                    }}>Complete</button>
                                                 
                                             </div>
                                         </div>
@@ -413,18 +416,25 @@ function completeDaily(id, completed, streak) {
                 </div> 
             </div> 
              <div className="RemovalContainer">
-                                          
-                <Droppable droppableId="Archive" type="group">
-                    
-                    {(provided) => (
-                        <div className="droppableContainerArchive" 
-                        {...provided.droppableProps} ref={provided.innerRef}>
-                            <p>Archived tasks: {deletedItems}</p>
-
-                        </div>
-                )}
-                </Droppable>
-
+             <div>   
+                <Link to='/archive' onClick={() => {
+                    archiveTask('test');
+                }}> 
+                       
+                    <Droppable droppableId="Archive" type="group">
+                
+                        {(provided) => (
+                            <div className="droppableContainerArchive" 
+                                {...provided.droppableProps} ref={provided.innerRef}>
+                                    <p>Archived tasks: {deletedItems}</p>
+                                </div>
+                        )}
+                    </Droppable>
+                   
+                    </Link>
+                </div>   
+                
+                <div>
                 <Droppable droppableId="Trash" type="group">
                     
                     {(provided) => (
@@ -435,6 +445,7 @@ function completeDaily(id, completed, streak) {
                         </div>
                 )}
                 </Droppable>
+                </div>
 
             </div> 
 
@@ -444,6 +455,7 @@ function completeDaily(id, completed, streak) {
 
             
         </>
+       
     )
 }
 
@@ -454,9 +466,11 @@ function completeDaily(id, completed, streak) {
 
 /*  
 Things to add:
-    - framer motion animations to cards when they are completed  extra:: add dragging animations??
-    - completed todos history (React Router) ++ Undo button that places it back inside array. 
-    - deleted todos  ""
+    - weather updates (axios)
+    - completed tasks log (React Router) ++ Undo button that places it back inside array.
     - local storage preservation. 
-    - weather updates
+    - Styling :
+         - framer motion animations to cards when they are completed  extra:: add dragging animations?
+         - apple font 
+    
 */
