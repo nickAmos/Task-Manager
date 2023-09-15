@@ -5,10 +5,9 @@ import TaskGenerator from './components/TaskGenerator';
 import { Route, Routes} from "react-router-dom";
 import { useState } from 'react';
 
-
-
-
 function App() {
+
+
 
   const [archiveTasks, setArchiveTasks] = useState([]);
 
@@ -20,14 +19,23 @@ function App() {
     
   }
 
-  console.log(archiveTasks);
+function removeAllArchived() {
+    setArchiveTasks([]);
+  }
 
+  const removeArchivedTask = (id) => {
+    setArchiveTasks( current => {
+      return current.filter(task => task.id !== id)
+    })
+  }
   
   return (
     <div>
       <Routes>
         <Route path='/' element={<TaskGenerator archiveTask={archiveTask} />} />
-        <Route path='/archive' element={<Archive archiveTasks={archiveTasks}/>} />
+        <Route path='/archive' element={<Archive archiveTasks={archiveTasks}
+        removeArchivedTask={removeArchivedTask}
+        removeAllArchived={removeAllArchived}/>} />
 
       </Routes>
     </div>
