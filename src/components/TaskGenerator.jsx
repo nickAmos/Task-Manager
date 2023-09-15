@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 
 
-export default function TaskGenerator( {archiveTask} ) {
+export default function TaskGenerator( {archiveTask, completedTasks} ) {
 
     //All state for Tasks
     const [newObject, setNewObject] = useState('');
@@ -24,20 +24,41 @@ export default function TaskGenerator( {archiveTask} ) {
     const [todosB, setTodosB] = useState([]);
     const [todosC, setTodosC] = useState([]);
     const [todosD, setTodosD] = useState([]);
-    const [deletedItems, setDeletedItems] = useState(0);
     const [open, setOpen] = useState(false);
     const [dateDisplay ,setDateDisplay] = useState(new Date());
     //Keeps track of time
     useEffect(() => {
-        var timer = setInterval(()=>setDateDisplay(new Date()), 1000 )
+        let timer = setInterval(()=>setDateDisplay(new Date()), 1000 )
         return function cleanup() {
             clearInterval(timer)
         }
     });
+//Handles local Storage
+    useEffect(() => {
+        const priority = window.localStorage.getItem('PriorityTodos');
+        if (priority !== null) setTodosA(JSON.parse(priority));
+        const daily = window.localStorage.getItem('DailyTodos');
+        if (daily !== null) setTodosB(JSON.parse(daily));
+        const longterm = window.localStorage.getItem('LongtermTodos');
+        if (longterm !== null) setTodosC(JSON.parse(longterm));
+        const Archive = window.localStorage.getItem('ArchiveDrop');
+        if (Archive !== null) setTodosD(JSON.parse(Archive));
+        const deleted = window.localStorage.getItem('Deleted');
+        
+    }
+    , [])
+
+    useEffect(() => {
+        window.localStorage.setItem('PriorityTodos', JSON.stringify(todosA));
+        window.localStorage.setItem('DailyTodos', JSON.stringify(todosB));
+        window.localStorage.setItem('LongtermTodos', JSON.stringify(todosC));
+        window.localStorage.setItem('ArchiveDrop', JSON.stringify(todosD));
+    }, [todosA, todosB, todosC, todosD])
 
     //Handles all task functionality
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);  
+
     const handleDragDrop = (results) => {
 
         const {source, destination} = results;
@@ -78,7 +99,6 @@ export default function TaskGenerator( {archiveTask} ) {
                 }
                 if (destinationDrop === 'Archive') {
                     archiveTask(removed);
-                    setDeletedItems((prev) => prev + 1);
                     copyofTodosD.splice(destinationIndex, 0, removed);
                     setTodosD(copyofTodosD);
                 }
@@ -99,6 +119,7 @@ export default function TaskGenerator( {archiveTask} ) {
                     setTodosC(copyofTodosC);
                 }
                 if (destinationDrop === 'Archive') {
+                    archiveTask(removed);
                     copyofTodosD.splice(destinationIndex, 0, removed);
                     setTodosD(copyofTodosD);
                 }
@@ -119,7 +140,6 @@ export default function TaskGenerator( {archiveTask} ) {
                 }
                 if (destinationDrop === 'Archive') {
                     archiveTask(removed);
-                    setDeletedItems((prev) => prev + 1);
                     copyofTodosD.splice(destinationIndex, 0, removed);
                     setTodosD(copyofTodosD);
                 }
@@ -239,7 +259,7 @@ export default function TaskGenerator( {archiveTask} ) {
                 <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                         <Box sx={style}>
                             <form onSubmit={handleSubmit} id="task-form">                                
-                                <input value={newObject} type="text" placeholder="Task Name" id="item" onChange={e => setNewObject(e.target.value)}/>
+                                <input value={newObject} type="text" placeholder="Task Name" id="item" onChange={e => setNewObject(e.target.value)} required/>
                                 <input type="date" onChange={e => setDate(e.target.value)} />
                                 <input value={timeline} type="text" placeholder="type here" onChange={e => setTimeLine(e.target.value)} id="timeline"/>
                                 <input type="text" placeholder="Add notes" value={notes} id="notes" onChange={e => setNotes(e.target.value)}/>
@@ -278,7 +298,6 @@ export default function TaskGenerator( {archiveTask} ) {
                                                 setNoteButton(!noteButton)}}>{!noteButton ? 'See Notes' : 'Hide'}</button>
                                                 <button onClick={() => {deleteTask(todo.id);
                                                                         archiveTask(todo);
-                                                                        setDeletedItems((item) => item + 1);
                                                     }}>Complete</button>
                                                 
                                             </div>
@@ -354,7 +373,9 @@ export default function TaskGenerator( {archiveTask} ) {
                                                 <button onClick={() => {
                                                     archiveTask(todo)
                                                     deleteTaskLong(todo.id)
-                                                    setDeletedItems((prev) => prev + 1 )}}>Complete</button>
+                                                    //setDeletedItems((prev) => prev + 1 )
+                                                }}
+                                                    >Complete</button>
                                                 </div>
                                         </div>
                                         )}
@@ -370,16 +391,14 @@ export default function TaskGenerator( {archiveTask} ) {
             </div> 
              <div className="RemovalContainer">
              <div>   
-                <Link to='/archive' onClick={() => {
-                    archiveTask('test');
-                }}> 
+                <Link to='/archive'> 
                        
                     <Droppable droppableId="Archive" type="group">
                 
                         {(provided) => (
                             <div className="droppableContainerArchive" 
                                 {...provided.droppableProps} ref={provided.innerRef}>
-                                    <p>Archived tasks: {deletedItems}</p>
+                                    <p>Archived tasks: {completedTasks}</p>
                                 </div>
                         )}
                     </Droppable>
@@ -407,15 +426,8 @@ export default function TaskGenerator( {archiveTask} ) {
        
     )
 }
-
-
-
-
-
-
 /*  
 Things to add:
-    - local storage preservation. 
     - Styling :
          - framer motion animations to cards when they are completed  extra:: add dragging animations?
          - apple font 
