@@ -1,3 +1,60 @@
+
+.Header {
+    width: 100vw;
+    height: 10vh;
+    background-color: white;
+    display: flex;
+    justify-content:center ;
+    align-items: center;
+}
+
+#title-container, #button-container, #timedisplay-container {
+    width: 33vw;
+    display: flex;
+    align-items: center;
+}
+
+#title-container h1 {
+    font-family: 'Poppins', Regular 400;
+    font-weight: 600;
+    font-size: 3rem;
+    padding-left: 10%;
+}
+
+
+
+
+#button-container {
+    flex-direction: column-reverse;
+    justify-content: center;    
+}
+
+#button-container button {
+    width: 50%;
+    background-color: white;
+    border: black 1.5px solid;
+    border-radius: 15px;
+    color: black;
+}
+
+#timedisplay-container {
+    justify-content: end;
+}
+
+#timedisplay-container p {
+    padding-right: 10%;
+    font-family: 'Poppins', Regular 400;
+    font-weight: 200;
+    font-size: 1.3rem;
+
+}
+
+
+
+
+
+
+
 #todo-container {
     border: 1px dotted black;
     border-radius: 5px;
@@ -19,8 +76,6 @@
     width: 80%;
     height: 90%;
     overflow-y: auto;
-    margin-top: 30px;
-    margin-bottom: 30px;
     background-color: rgb(238, 238, 238);
 }
 
@@ -30,6 +85,10 @@
 
 #todo-textbox-daily:has(input:checked)  {
     background-color: greenyellow;
+}
+
+:hover.Priority-Tasks, :hover.Daily-Tasks, :hover.Longterm-Tasks {
+    background-color: aquamarine;
 }
 
 
@@ -43,8 +102,13 @@
     height: auto;
 }
 
+.button-container {
+    background-color: aquamarine;
+}
+
 #priority-container, #daily-container, #longterm-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: rgb(206, 206, 206);
@@ -53,7 +117,7 @@
     width: 30%;
 }
 
-.RemovalContainer {
+.Footer-container {
     width: 100vw;
     height: 10vh;
     background-color: oldlace;
@@ -62,43 +126,20 @@
     align-items: center;
 }
 
+#archive-container, #delete-container {
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .droppableContainerTrash, .droppableContainerArchive {
     width: 80%;
-    height: 80%;
+    height: 4rem;
     border-radius: 15px;
-    border: dotted black 3px;
+    border:solid black 1.5px;
 }
 
-.addtask-container {
-    width: 100vw;
-    height: 10vh;
-    background-color: antiquewhite;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.addtask-container button {
-    color: black;
-    border-radius: 10px;
-    border: black solid 2px;
-    background-color: whitesmoke;
-    height: 80%;
-    width: 10%;
-}
 
-#button-container {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: center;
-    align-items: center;
-    
-}
 
-:hover.droppableContainerTrash, :hover.droppableContainerArchive {
-    background-color: rgb(255, 144, 144);
-}
-
-:hover.Priority-Tasks, :hover.Daily-Tasks, :hover.Longterm-Tasks {
-    background-color: aquamarine;
-}
 

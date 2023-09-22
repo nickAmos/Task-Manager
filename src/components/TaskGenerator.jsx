@@ -18,8 +18,14 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
     const [tasktype, setTasktype] = useState('');
     const [date, setDate] = useState('');
     const [notes, setNotes] = useState('');
-    const [seeNotes, setSeeNotes] = useState(false);
-    const [noteButton, setNoteButton] = useState(false);
+
+    const [seeNotesPriority, setSeeNotesPriority] = useState(false);
+    const [noteButtonPriority, setNoteButtonPriority] = useState(false);
+    const [seeNotesDaily, setSeeNotesDaily] = useState(false);
+    const [noteButtonDaily, setNoteButtonDaily] = useState(false);
+    const [seeNotesLong, setSeeNotesLong] = useState(false);
+    const [noteButtonLong, setNoteButtonLong] = useState(false);
+
     const [todosA, setTodosA] = useState([]);
     const [todosB, setTodosB] = useState([]);
     const [todosC, setTodosC] = useState([]);
@@ -245,16 +251,25 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
     return(
         
         <>     
-                <div className="addtask-container">
-                    <div>
-                        <p> Time : {dateDisplay.toLocaleTimeString()}  Date : {dateDisplay.toLocaleDateString()}</p>
+                <div className="Header">
+
+                    <div id="title-container">
+                        <h1>Task Manager</h1>
                     </div>
-                    <Button onClick={handleOpen}>
-                        <div id="button-container">
-                            <div>Add Task</div>
-                            <Icon name="plus" size="large"/>
-                        </div>
-                    </Button> 
+                    
+                    <div id="button-container">
+                        <Button onClick={handleOpen}>
+                            <div id="button-container">
+                                <div>Add Task</div>
+                                <Icon name="plus" size="large"/>
+                            </div>
+                        </Button> 
+                    </div>
+
+                    <div id="timedisplay-container">
+                        <p> {dateDisplay.toLocaleTimeString()}  ||  {dateDisplay.toLocaleDateString()}</p>
+                    </div>
+
                 </div>
                 <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                         <Box sx={style}>
@@ -275,7 +290,11 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
             <DragDropContext onDragEnd={handleDragDrop}> 
 
             <div id="task-category-flex">
-                <div id="priority-container">                        
+                <div id="priority-container">
+                <div className="button-container">
+                    <button onClick={() => {setSeeNotesPriority(!seeNotesPriority)
+                                        setNoteButtonPriority(!noteButtonPriority)}}>{!noteButtonPriority ? 'See Notes' : 'Hide'}</button>             
+                </div>           
                 <Droppable droppableId="Priority-Tasks" type="group">
                     {(provided) => (
                         <div className="Priority-Tasks" {...provided.droppableProps} ref={provided.innerRef}>
@@ -293,9 +312,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                                                 <p>Index: {index}</p>
                                                 <p>task type: {todo.taskType}</p>
                                                 <p>Due: {todo.due}</p>
-                                                {seeNotes ? <p>{todo.notes}</p> : null}
-                                                <button onClick={() => {setSeeNotes(!seeNotes)
-                                                setNoteButton(!noteButton)}}>{!noteButton ? 'See Notes' : 'Hide'}</button>
+                                                {seeNotesPriority ? <p>{todo.notes}</p> : null}
                                                 <button onClick={() => {deleteTask(todo.id);
                                                                         archiveTask(todo);
                                                     }}>Complete</button>
@@ -314,7 +331,12 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                 </Droppable>
                 </div>  
 
-                <div id="daily-container">                        
+                <div id="daily-container">
+                <button onClick={() => 
+                {setSeeNotesDaily(!seeNotesDaily)
+                 setNoteButtonDaily(!noteButtonDaily)}}>
+                    {!noteButtonDaily ? 'See Notes' : 'Hide'}
+                </button>                        
                 <Droppable droppableId="Daily-Tasks" type="group">
                     {(provided) => (
                         <div className="Daily-Tasks" {...provided.droppableProps} ref={provided.innerRef}>
@@ -332,9 +354,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                                                 <p>task type: {todo.taskType}</p>
                                                 <p>Due: {todo.due}</p>
                                                 <p>Streak: {todo.streak}</p>
-                                                {seeNotes ? <p>{todo.notes}</p> : null}
-                                                <button onClick={() => {setSeeNotes(!seeNotes)
-                                                setNoteButton(!noteButton)}}>{!noteButton ? 'See Notes' : 'Hide'}</button>
+                                                {seeNotesDaily ? <p>{todo.notes}</p> : null}
                                                 <input type="checkbox" checked={todo.completed}
                                                         onChange={e => completeDaily(todo.id, e.target.checked, todo.streak)}/>
                                                 </div>
@@ -350,7 +370,9 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                 </Droppable>
                 </div>
 
-                <div id="longterm-container">                     
+                <div id="longterm-container"> 
+                <button onClick={() => {setSeeNotesLong(!seeNotesLong)
+                                        setNoteButtonLong(!noteButtonLong)}}>{!noteButtonLong ? 'See Notes' : 'Hide'}</button>                    
                 <Droppable droppableId="Longterm-Tasks" type="group">
                     {(provided) => (
                         <div className="Longterm-Tasks" {...provided.droppableProps} ref={provided.innerRef}>
@@ -367,9 +389,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                                                 <p>Index: {index}</p>
                                                 <p>task type: {todo.taskType}</p>
                                                 <p>Due: {todo.due}</p>
-                                                {seeNotes ? <p>{todo.notes}</p> : null}
-                                                <button onClick={() => {setSeeNotes(!seeNotes)
-                                                setNoteButton(!noteButton)}}>{!noteButton ? 'See Notes' : 'Hide'}</button>
+                                                {seeNotesLong ? <p>{todo.notes}</p> : null}
                                                 <button onClick={() => {
                                                     archiveTask(todo)
                                                     deleteTaskLong(todo.id)
@@ -389,34 +409,29 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                 </Droppable>
                 </div> 
             </div> 
-             <div className="RemovalContainer">
-             <div>   
-                <Link to='/archive'> 
-                       
-                    <Droppable droppableId="Archive" type="group">
-                
-                        {(provided) => (
-                            <div className="droppableContainerArchive" 
-                                {...provided.droppableProps} ref={provided.innerRef}>
-                                    <p>Archived tasks: {completedTasks}</p>
-                                </div>
-                        )}
-                    </Droppable>
-                   
+             <div className="Footer-container">
+                <div id="archive-container">   
+                    <Link to='/archive' className="droppableContainerArchive"> 
+                        <Droppable droppableId="Archive" type="group">
+                            {(provided) => (
+                                <div  
+                                    {...provided.droppableProps} ref={provided.innerRef}>
+                                        <p>Archived tasks: {completedTasks}</p>
+                                    </div>
+                            )}
+                        </Droppable>
                     </Link>
                 </div>   
                 
-                <div>
-                <Droppable droppableId="Trash" type="group">
-                    
-                    {(provided) => (
-                        <div className="droppableContainerTrash" 
-                        {...provided.droppableProps} ref={provided.innerRef}>
-                            Delete
-
-                        </div>
-                )}
-                </Droppable>
+                <div id='delete-container'>
+                    <Droppable droppableId="Trash" type="group">       
+                        {(provided) => (
+                            <div className="droppableContainerTrash" 
+                            {...provided.droppableProps} ref={provided.innerRef}>
+                                Delete
+                            </div>
+                    )}
+                    </Droppable>
                 </div>
 
             </div> 
