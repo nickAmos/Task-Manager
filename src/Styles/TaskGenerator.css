@@ -1,7 +1,7 @@
 
 .Header {
     width: 100vw;
-    height: 10vh;
+    height: 15vh;
     background-color: white;
     display: flex;
     justify-content:center ;
@@ -21,6 +21,7 @@
     padding-left: 10%;
 }
 
+ 
 
 
 
@@ -56,9 +57,9 @@
 
 
 #todo-container {
-    border: 1px dotted black;
+    border: 1px solid black;
     border-radius: 5px;
-    background-color: rgb(236, 247, 179) ;
+    background-color: white ;
     width: auto;
     
 }
@@ -74,9 +75,10 @@
 
 .Priority-Tasks, .Daily-Tasks, .Longterm-Tasks {
     width: 80%;
-    height: 90%;
+    height: 85%;
     overflow-y: auto;
-    background-color: rgb(238, 238, 238);
+    border-radius: 5px;
+    background-color: rgb(215, 247, 232);
 }
 
 #todo-textbox-daily {
@@ -99,28 +101,61 @@
     display: flex;
     flex-direction:row;
     justify-content: space-around;
-    height: auto;
+    height: 75vh;
 }
 
-.button-container {
-    background-color: aquamarine;
+#task-counter {
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    background-color: rgb(220, 237, 229);;
+    border-radius: 5px;
+    color: grey;
+
 }
+
+.Task-Type-container {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#seemore-container {
+    padding-right: 15px;
+    height: 30px;
+}
+
+#task-icon-name {
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+}
+
+#task-icon-name h2 {
+    margin: 0;
+    padding-left: 15px;
+}
+
+
 
 #priority-container, #daily-container, #longterm-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    background-color: rgb(206, 206, 206);
+    background-color: rgb(235, 255, 245);
     border-radius: 15px;
-    height: 80vh;
-    width: 30%;
+    height: 75vh;
+    width: 27.5%;
 }
 
 .Footer-container {
     width: 100vw;
     height: 10vh;
-    background-color: oldlace;
+    background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,6 +173,14 @@
     height: 4rem;
     border-radius: 15px;
     border:solid black 1.5px;
+}
+
+#line-break {
+    width: 90%;
+    height: 3px;
+    background-color: rgb(39, 95, 67);
+    border-radius: 5px;
+    margin-bottom: 15px;
 }
 
 

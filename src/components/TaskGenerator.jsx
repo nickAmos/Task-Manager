@@ -31,6 +31,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
     const [todosC, setTodosC] = useState([]);
     const [todosD, setTodosD] = useState([]);
     const [open, setOpen] = useState(false);
+    /*
     const [dateDisplay ,setDateDisplay] = useState(new Date());
     //Keeps track of time
     useEffect(() => {
@@ -38,7 +39,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
         return function cleanup() {
             clearInterval(timer)
         }
-    });
+    }); */
 //Handles local Storage
     useEffect(() => {
         const priority = window.localStorage.getItem('PriorityTodos');
@@ -248,6 +249,9 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
         width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4,
       };
       //render
+
+
+   
     return(
         
         <>     
@@ -267,7 +271,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                     </div>
 
                     <div id="timedisplay-container">
-                        <p> {dateDisplay.toLocaleTimeString()}  ||  {dateDisplay.toLocaleDateString()}</p>
+                        {/*<p> {dateDisplay.toLocaleTimeString()}  ||  {dateDisplay.toLocaleDateString()}</p> */}
                     </div>
 
                 </div>
@@ -291,10 +295,17 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
 
             <div id="task-category-flex">
                 <div id="priority-container">
-                <div className="button-container">
-                    <button onClick={() => {setSeeNotesPriority(!seeNotesPriority)
-                                        setNoteButtonPriority(!noteButtonPriority)}}>{!noteButtonPriority ? 'See Notes' : 'Hide'}</button>             
-                </div>           
+                <div className="Task-Type-container">
+                    <div id="task-icon-name">
+                        <div id="task-counter">{todosA.length}</div>  
+                            <h2>Priority</h2>
+                    </div>
+                    <div id="seemore-container">
+                        <button class="mini ui grey basic button" onClick={() => {setSeeNotesPriority(!seeNotesPriority)
+                                            setNoteButtonPriority(!noteButtonPriority)}}>{!noteButtonPriority ? 'See Notes' : 'Hide'}</button>            
+                    </div>
+                </div> 
+                <div id="line-break"></div>          
                 <Droppable droppableId="Priority-Tasks" type="group">
                     {(provided) => (
                         <div className="Priority-Tasks" {...provided.droppableProps} ref={provided.innerRef}>
@@ -332,11 +343,20 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                 </div>  
 
                 <div id="daily-container">
-                <button onClick={() => 
-                {setSeeNotesDaily(!seeNotesDaily)
-                 setNoteButtonDaily(!noteButtonDaily)}}>
-                    {!noteButtonDaily ? 'See Notes' : 'Hide'}
-                </button>                        
+                <div className="Task-Type-container">
+                <div id="task-icon-name">
+                <div id="task-counter">{todosB.length}</div> 
+                        <h2>Daily</h2>
+                    </div>
+                    <div id="seemore-container">
+                        <button class="mini ui grey basic button" onClick={() => 
+                        {setSeeNotesDaily(!seeNotesDaily)
+                        setNoteButtonDaily(!noteButtonDaily)}}>
+                            {!noteButtonDaily ? 'See Notes' : 'Hide'}
+                        </button>
+                    </div>
+                </div> 
+                <div id="line-break"></div>                        
                 <Droppable droppableId="Daily-Tasks" type="group">
                     {(provided) => (
                         <div className="Daily-Tasks" {...provided.droppableProps} ref={provided.innerRef}>
@@ -371,8 +391,17 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                 </div>
 
                 <div id="longterm-container"> 
-                <button onClick={() => {setSeeNotesLong(!seeNotesLong)
-                                        setNoteButtonLong(!noteButtonLong)}}>{!noteButtonLong ? 'See Notes' : 'Hide'}</button>                    
+                <div className="Task-Type-container">
+                    <div id="task-icon-name">
+                        <div id="task-counter">{todosC.length}</div> 
+                        <h2>Long term</h2>
+                    </div>
+                    <div id="seemore-container">
+                        <button class="mini ui grey basic button" onClick={() => {setSeeNotesLong(!seeNotesLong)
+                                            setNoteButtonLong(!noteButtonLong)}}>{!noteButtonLong ? 'See Notes' : 'Hide'}</button>
+                    </div>
+                </div> 
+                <div id="line-break"></div>                    
                 <Droppable droppableId="Longterm-Tasks" type="group">
                     {(provided) => (
                         <div className="Longterm-Tasks" {...provided.droppableProps} ref={provided.innerRef}>
