@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 
 
 
+
 export default function TaskGenerator( {archiveTask, completedTasks} ) {
 
     //All state for Tasks
@@ -19,8 +20,8 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
     const [date, setDate] = useState('');
     const [notes, setNotes] = useState('');
 
-    const [seeNotesPriority, setSeeNotesPriority] = useState(false);
-    const [noteButtonPriority, setNoteButtonPriority] = useState(false);
+    const [seeNotesPriority, setSeeNotesPriority] = useState(true);
+    const [noteButtonPriority, setNoteButtonPriority] = useState(true);
     const [seeNotesDaily, setSeeNotesDaily] = useState(false);
     const [noteButtonDaily, setNoteButtonDaily] = useState(false);
     const [seeNotesLong, setSeeNotesLong] = useState(false);
@@ -31,7 +32,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
     const [todosC, setTodosC] = useState([]);
     const [todosD, setTodosD] = useState([]);
     const [open, setOpen] = useState(false);
-    /*
+
     const [dateDisplay ,setDateDisplay] = useState(new Date());
     //Keeps track of time
     useEffect(() => {
@@ -39,7 +40,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
         return function cleanup() {
             clearInterval(timer)
         }
-    }); */
+    }); 
 //Handles local Storage
     useEffect(() => {
         const priority = window.localStorage.getItem('PriorityTodos');
@@ -227,6 +228,13 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
             return currentTasks.filter(todo => todo.id !== id); 
         })
         }
+
+        function deleteTaskDaily(id) {
+            setTodosB(currentTasks => {
+                return currentTasks.filter(todo => todo.id !== id); 
+            })
+            }
+
     function completeDaily(id, completed, streak) {
     
             setTodosB(currentTasks => {
@@ -271,17 +279,17 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                     </div>
 
                     <div id="timedisplay-container">
-                        {/*<p> {dateDisplay.toLocaleTimeString()}  ||  {dateDisplay.toLocaleDateString()}</p> */}
+                        {<p> {dateDisplay.toLocaleTimeString()}  ||  {dateDisplay.toLocaleDateString()}</p> }
                     </div>
 
                 </div>
                 <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                         <Box sx={style}>
                             <form onSubmit={handleSubmit} id="task-form">                                
-                                <input value={newObject} type="text" placeholder="Task Name" id="item" onChange={e => setNewObject(e.target.value)} required/>
+                                <input value={newObject} autocomplete="off" type="text" placeholder="Task Name" id="item" onChange={e => setNewObject(e.target.value)} required/>
                                 <input type="date" onChange={e => setDate(e.target.value)} />
                                 <input value={timeline} type="text" placeholder="type here" onChange={e => setTimeLine(e.target.value)} id="timeline"/>
-                                <input type="text" placeholder="Add notes" value={notes} id="notes" onChange={e => setNotes(e.target.value)}/>
+                                <input type="text" placeholder="Add notes" autocomplete="off" value={notes} id="notes" onChange={e => setNotes(e.target.value)}/>
                                 <div class="ui buttons">
                                     <button value='Priority' onClick={e => {setTasktype(e.target.value);}} class="ui blue basic button">Priority</button>
                                     <button value='Daily' onClick={e => {setTasktype(e.target.value);}} class="ui red basic button">Daily</button>
@@ -294,6 +302,8 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
             <DragDropContext onDragEnd={handleDragDrop}> 
 
             <div id="task-category-flex">
+
+
                 <div id="priority-container">
                 <div className="Task-Type-container">
                     <div id="task-icon-name">
@@ -302,7 +312,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                     </div>
                     <div id="seemore-container">
                         <button class="mini ui grey basic button" onClick={() => {setSeeNotesPriority(!seeNotesPriority)
-                                            setNoteButtonPriority(!noteButtonPriority)}}>{!noteButtonPriority ? 'See Notes' : 'Hide'}</button>            
+                                            setNoteButtonPriority(!noteButtonPriority)}}>{!noteButtonPriority ? 'See Notes' : 'Hide Notes'}</button>            
                     </div>
                 </div> 
                 <div id="line-break"></div>          
@@ -312,25 +322,34 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                             {todosA.map((todo, index) => (
                                 <Draggable draggableId={todo.id} key={todo.id} index={index} >
                                     {(provided) => (
-                                        <>
+                                        
                                         <div key={todo.id} id="todo-container"
                                         {...provided.dragHandleProps}
                                         {...provided.draggableProps}
                                         ref={provided.innerRef}> 
                                             <div id="todo-textbox">
-                                                <h1>{todo.title}</h1>
-                                                <p>ID: {todo.id}</p>
-                                                <p>Index: {index}</p>
-                                                <p>task type: {todo.taskType}</p>
-                                                <p>Due: {todo.due}</p>
-                                                {seeNotesPriority ? <p>{todo.notes}</p> : null}
-                                                <button onClick={() => {deleteTask(todo.id);
-                                                                        archiveTask(todo);
-                                                    }}>Complete</button>
+                                            <div id="title-date">
+                                                    <div id="title"><h1>{todo.title}</h1></div>
+                                                    <div id="emoji">🎯</div>
+                                                </div>
+                                                <br></br>
+                                                {seeNotesPriority ? <p id="notes">{todo.notes}</p> : null}
                                                 
-                                            </div>
+                                                <div id="delete-complete">
+                                                    <div id="checked">
+                                                        <Icon onClick={() => {deleteTask(todo.id);
+                                                                              archiveTask(todo);}} 
+                                                        name="check square outline" size="large"></Icon> 
+                                                    </div>
+                                                    <div id="date"><p>{todo.due}</p></div>
+                                                    <div id="trash">
+                                                        <Icon onClick={() => {deleteTask(todo.id)}}
+                                                         name="trash alternate outline"color="red" size="large"></Icon> 
+                                                    </div>
+                                                </div>
+                                                </div>
                                         </div>
-                                        </>
+                                       
                                         )}
 
                                 </Draggable>
@@ -340,7 +359,9 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                     )}
                 
                 </Droppable>
-                </div>  
+                </div> 
+
+{/* place switch arrow*/} 
 
                 <div id="daily-container">
                 <div className="Task-Type-container">
@@ -367,17 +388,40 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                                         {...provided.dragHandleProps}
                                         {...provided.draggableProps}
                                         ref={provided.innerRef}>
-                                            <div id="todo-textbox-daily">
-                                                <h1>{todo.title}</h1>
-                                                <p>ID: {todo.id}</p>
-                                                <p>Index: {index}</p>
-                                                <p>task type: {todo.taskType}</p>
-                                                <p>Due: {todo.due}</p>
-                                                <p>Streak: {todo.streak}</p>
-                                                {seeNotesDaily ? <p>{todo.notes}</p> : null}
-                                                <input type="checkbox" checked={todo.completed}
-                                                        onChange={e => completeDaily(todo.id, e.target.checked, todo.streak)}/>
+                                            <div id="todo-textbox">
+                                                <div id="title-date">
+                                                    <div id="title"><h1>{todo.title}</h1></div>
+                                                    <div id="emoji">
+                                                        <div>{todo.streak}</div>
+                                                        <div> 🔥</div>
+                                                    </div>
                                                 </div>
+                                                <br></br>
+                                                {seeNotesPriority ? <p id="notes">{todo.notes}</p> : null}
+                                                
+                                                <div id="delete-complete">
+                                                    <div id="streaks-container">
+                                                         <input type="checkbox" checked={todo.completed}
+                                                        onClick={e => completeDaily(todo.id, e.target.checked, todo.streak)}/>
+                                                        <Icon  
+                                                        name="check square outline" size="large"></Icon>
+                                                        
+                                                    </div>
+                                                
+                                                    
+                                                    <div id="trash">
+                                                        <Icon onClick={() => {deleteTaskDaily(todo.id)}}
+                                                         name="trash alternate outline"color="red" size="large"></Icon> 
+                                                    </div>
+
+                                                </div>
+                                            
+                                                
+                                                </div>
+
+
+                                                
+                                               
                                         </div>
                                         )}
 
@@ -389,6 +433,8 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                 
                 </Droppable>
                 </div>
+
+{/* place switch arrow*/} 
 
                 <div id="longterm-container"> 
                 <div className="Task-Type-container">
@@ -413,18 +459,25 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                                         {...provided.draggableProps}
                                         ref={provided.innerRef}>
                                             <div id="todo-textbox">
-                                                <h1>{todo.title}</h1>
-                                                <p>ID: {todo.id}</p>
-                                                <p>Index: {index}</p>
-                                                <p>task type: {todo.taskType}</p>
-                                                <p>Due: {todo.due}</p>
-                                                {seeNotesLong ? <p>{todo.notes}</p> : null}
-                                                <button onClick={() => {
-                                                    archiveTask(todo)
-                                                    deleteTaskLong(todo.id)
-                                                    //setDeletedItems((prev) => prev + 1 )
-                                                }}
-                                                    >Complete</button>
+                                            <div id="title-date">
+                                                    <div id="title"><h1>{todo.title}</h1></div>
+                                                    <div id="emoji">🏆</div>
+                                                </div>
+                                                <br></br>
+                                                {seeNotesPriority ? <p id="notes">{todo.notes}</p> : null}
+                                                
+                                                <div id="delete-complete">
+                                                    <div id="checked">
+                                                        <Icon onClick={() => {deleteTaskLong(todo.id);
+                                                                              archiveTask(todo);}} 
+                                                        name="check square outline" size="large"></Icon> 
+                                                    </div>
+                                                    <div id="date"><p>{todo.due}</p></div>
+                                                    <div id="trash">
+                                                        <Icon onClick={() => {deleteTaskLong(todo.id)}}
+                                                         name="trash alternate outline"color="red" size="large"></Icon> 
+                                                    </div>
+                                                </div>
                                                 </div>
                                         </div>
                                         )}

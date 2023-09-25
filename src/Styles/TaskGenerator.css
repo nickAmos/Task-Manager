@@ -21,6 +21,27 @@
     padding-left: 10%;
 }
 
+#streaks-container input {
+    height: 30px;
+    width: 30px;
+    position: absolute;
+  opacity: 0;
+  cursor: pointer;
+
+}
+
+
+
+#streaks-container:has(input:checked) {
+    background-color: red;
+    visibility: hidden;
+}
+
+#streaks-container {
+    height: 30px;
+    width: 30px;
+}
+
  
 
 
@@ -57,11 +78,45 @@
 
 
 #todo-container {
-    border: 1px solid black;
-    border-radius: 5px;
+    border: 1px solid grey;
+    border-radius: 15px;
     background-color: white ;
     width: auto;
-    
+}
+
+#delete-complete {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+
+#checked, #trash {
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    width: 40px;
+   
+}
+
+#trash {
+    color: rgb(245, 100, 100);
+}
+
+#checked {
+    color: rgb(6, 142, 31);
+}
+#date {
+    font-weight: 500;
+}
+
+#emoji {
+    height: 40px;
+    width: 65px;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .droppableContainerSPAWN {
@@ -89,12 +144,33 @@
     background-color: greenyellow;
 }
 
-:hover.Priority-Tasks, :hover.Daily-Tasks, :hover.Longterm-Tasks {
-    background-color: aquamarine;
+.Longterm-Tasks #todo-textbox {
+    background-color: rgb(255, 255, 255);
+   
+    border-radius: 15px;
+    
 }
 
 
+#todo-textbox {
+    padding: 25px 25px 0px 15px;
+}
 
+#title-date {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#title {
+    flex-grow: 1;
+}
+
+#notes {
+    font-size: large;
+    color: rgb(99, 99, 99);
+}
 
 
 #task-category-flex {
