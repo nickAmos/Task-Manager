@@ -33,6 +33,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
     const [todosD, setTodosD] = useState([]);
     const [open, setOpen] = useState(false);
 
+
     const [dateDisplay ,setDateDisplay] = useState(new Date());
     //Keeps track of time
     useEffect(() => {
@@ -171,7 +172,8 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                         due: date,
                         completed: false,
                         streak: 0,
-                        notes: notes
+                        notes: notes,
+                        streakColor: 'green'
                         
                     },
                     ]
@@ -229,27 +231,50 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
         })
         }
 
-        function deleteTaskDaily(id) {
-            setTodosB(currentTasks => {
-                return currentTasks.filter(todo => todo.id !== id); 
-            })
-            }
+        
 
-    function completeDaily(id, completed, streak) {
+    function completeDaily(id, completed, streak, streakColor) {
+
+        if (streakColor === 'green') {
+
+           console.log('ran');
     
             setTodosB(currentTasks => {
                 return currentTasks.map(todo => {
                     if (todo.id === id) {
                         if (completed === true) {
                             streak += 1
+                            streakColor = 'grey';
                         }
                         
-                        return {...todo, completed, streak}
+                        return {...todo, completed, streak, streakColor}
                     }
                     return todo;
                 })
             })
         }
+
+        
+    }
+
+    function resetStreak(id, streak, streakColor) {
+
+        console.log('also ran');
+
+        setTodosB(currentTasks => {
+            return currentTasks.map(todo => {
+                if (todo.id === id) {
+
+                        streak = 0;
+                        streakColor = 'green';
+                    
+                    
+                    return {...todo, streak, streakColor}
+                }
+                return todo;
+            })
+        })
+    }
 
     //Styles modal
     const style = {
@@ -272,7 +297,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                     <div id="button-container">
                         <Button onClick={handleOpen}>
                             <div id="button-container">
-                                <div>Add Task</div>
+                                
                                 <Icon name="plus" size="large"/>
                             </div>
                         </Button> 
@@ -370,9 +395,10 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                         <h2>Daily</h2>
                     </div>
                     <div id="seemore-container">
-                        <button class="mini ui grey basic button" onClick={() => 
-                        {setSeeNotesDaily(!seeNotesDaily)
-                        setNoteButtonDaily(!noteButtonDaily)}}>
+                        <button class="mini ui grey basic button" onClick={() => {
+                            setSeeNotesDaily(!seeNotesDaily);
+                            setNoteButtonDaily(!noteButtonDaily);
+                            }} >
                             {!noteButtonDaily ? 'See Notes' : 'Hide'}
                         </button>
                     </div>
@@ -397,21 +423,21 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                                                     </div>
                                                 </div>
                                                 <br></br>
-                                                {seeNotesPriority ? <p id="notes">{todo.notes}</p> : null}
+                                                {seeNotesDaily ? <p id="notes">{todo.notes}</p> : null}
                                                 
                                                 <div id="delete-complete">
                                                     <div id="streaks-container">
                                                          <input type="checkbox" checked={todo.completed}
-                                                        onClick={e => completeDaily(todo.id, e.target.checked, todo.streak)}/>
+                                                        onClick={e => {completeDaily(todo.id, e.target.checked, todo.streak, todo.streakColor)}}/>
                                                         <Icon  
-                                                        name="check square outline" size="large"></Icon>
+                                                        name="check square outline" size="large" color={todo.streakColor}></Icon>
                                                         
                                                     </div>
                                                 
                                                     
                                                     <div id="trash">
-                                                        <Icon onClick={() => {deleteTaskDaily(todo.id)}}
-                                                         name="trash alternate outline"color="red" size="large"></Icon> 
+                                                        <Icon onClick={() => resetStreak(todo.id, todo.streak, todo.streakColor)}
+                                                         name="redo alternate" color="red" size="large"></Icon> 
                                                     </div>
 
                                                 </div>
@@ -464,7 +490,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                                                     <div id="emoji">🏆</div>
                                                 </div>
                                                 <br></br>
-                                                {seeNotesPriority ? <p id="notes">{todo.notes}</p> : null}
+                                                {seeNotesLong ? <p id="notes">{todo.notes}</p> : null}
                                                 
                                                 <div id="delete-complete">
                                                     <div id="checked">
@@ -496,9 +522,22 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                     <Link to='/archive' className="droppableContainerArchive"> 
                         <Droppable droppableId="Archive" type="group">
                             {(provided) => (
-                                <div  
+                                <div id="dropcontain"  
                                     {...provided.droppableProps} ref={provided.innerRef}>
-                                        <p>Archived tasks: {completedTasks}</p>
+                                        <div id="reveal-container">
+                                            <div class="ui move up reveal">
+                                                <div class="visible content">
+                                                    <div id="icon-container">
+                                                        <Icon name="cloud upload" size="large"/>
+                                                    </div>
+                                                </div>
+                                                <div class="hidden content" id='hidden-content'>
+                                                    <div id="text-container">
+                                                    <p>Archive</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                             )}
                         </Droppable>
@@ -510,7 +549,20 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                         {(provided) => (
                             <div className="droppableContainerTrash" 
                             {...provided.droppableProps} ref={provided.innerRef}>
-                                Delete
+                                    <div id="reveal-container">
+                                            <div  class="ui move up reveal">
+                                                <div class="visible content">
+                                                    <div id="icon-container">
+                                                        <Icon name="trash" size="large"/>
+                                                    </div>
+                                                </div>
+                                                <div class="hidden content" id='hidden-content'>
+                                                    <div id="text-container">
+                                                    <p>Delete</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                             </div>
                     )}
                     </Droppable>
