@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 
 
-export default function TaskGenerator( {archiveTask, completedTasks} ) {
+export default function TaskGenerator( {archiveTask} ) {
 
     //All state for Tasks
     const [newObject, setNewObject] = useState('');
@@ -41,7 +41,20 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
         return function cleanup() {
             clearInterval(timer)
         }
+        
     }); 
+
+    function minutesDiff(dateTime1, dateTime2, id, streak, streakColor) {
+        console.log(`Date time one is: ${dateTime1.getTime()} (${dateTime1}) and date time two is: ${dateTime2.getTime()} (${dateTime2})`)
+        let differenceValueMili = (dateTime1.getTime() - dateTime2.getTime());
+        console.log(`Diff Milli: ${differenceValueMili}`);
+        setTimeout(() => {
+            resetStreak(id, streak, streakColor);
+          }, differenceValueMili);
+        differenceValueMili /= 3.6e+6
+        return Math.abs(Math.round(differenceValueMili));
+    }
+
 //Handles local Storage
     useEffect(() => {
         const priority = window.localStorage.getItem('PriorityTodos');
@@ -52,8 +65,6 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
         if (longterm !== null) setTodosC(JSON.parse(longterm));
         const Archive = window.localStorage.getItem('ArchiveDrop');
         if (Archive !== null) setTodosD(JSON.parse(Archive));
-        const deleted = window.localStorage.getItem('Deleted');
-        
     }
     , [])
 
@@ -238,6 +249,30 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
         if (streakColor === 'green') {
 
            console.log('ran');
+
+           let today = dateDisplay;
+
+           let month = today.getMonth() + 1;
+          
+           let day = today.getDate();
+           if (day < 10) {
+            day = `0${day}`;
+           }
+           if (month < 10) {
+            month = `0${month}`;
+           } else {
+            month = month.toString();
+           }
+           
+
+           let midnight = `${today.getFullYear()}-${month}-${day}T12:59:59.999Z`;
+           midnight = midnight.toString();
+           console.log(midnight);
+           let timeToRest = minutesDiff(new Date(`${midnight}`), today, id, streak, streakColor);
+
+
+
+           //time to rest is help in TimeToRest variable (hours)
     
             setTodosB(currentTasks => {
                 return currentTasks.map(todo => {
@@ -252,15 +287,41 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                     return todo;
                 })
             })
+
+            setTimeout(() => {
+                setTodosB(currentTasks => {
+                    return currentTasks.map(todo => {
+                        if (todo.id === id) {
+                            if (completed === true) {
+                                streakColor = 'green';
+                            }
+                            
+                            return {...todo, completed, streakColor}
+                        }
+                        return todo;
+                    })
+                })
+
+            }, timeToRest * 3.6e+6 );
+            //
+            
+            //reset the streak 24 hours after click if color is green
+            setTimeout(() => {
+                if (streakColor = 'green') {
+                resetStreak(id, streak, streakColor);
+                }
+            }, 8.64e+7)
+            //
+        
         }
 
         
     }
 
     function resetStreak(id, streak, streakColor) {
-
-        console.log('also ran');
-
+// If the streak hasnt been pressed, reset the streak, 
+//function called 24 hr after last streak
+        if (streakColor === 'green') {
         setTodosB(currentTasks => {
             return currentTasks.map(todo => {
                 if (todo.id === id) {
@@ -274,6 +335,7 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                 return todo;
             })
         })
+     }
     }
 
     //Styles modal
@@ -429,8 +491,9 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
                                                     <div id="streaks-container">
                                                          <input type="checkbox" checked={todo.completed}
                                                         onClick={e => {completeDaily(todo.id, e.target.checked, todo.streak, todo.streakColor)}}/>
-                                                        <Icon  
-                                                        name="check square outline" size="large" color={todo.streakColor}></Icon>
+                                                        {todo.streakColor === 'green' ? <Icon name="check square outline" size="large" color={todo.streakColor}></Icon>
+                                                        : <p>Come back tommorow</p> }
+                                                        
                                                         
                                                     </div>
                                                 
@@ -578,6 +641,19 @@ export default function TaskGenerator( {archiveTask, completedTasks} ) {
 /*  
 Things to add:
     - Styling :
-         - framer motion animations to cards when they are completed  extra:: add dragging animations?
-         - apple font 
+         - cooler font (APPLE?)
+         Change color palate to be cleaner
+         header // foot colours 
+         task form update
+         grid style to archived tasks
+         make cards cleaner // more structured. 
+
+    - funcitonality: 
+        daily tasks show "come back tommorow" once checked
+           - revert to tick after once next day comes around?
+        
+        archieved daily tasks show the longest streak. 
+        fix hide notes buttons to all be same. 
+
+        
 */
