@@ -235,6 +235,12 @@ export default function TaskGenerator( {archiveTask} ) {
             return currentTasks.filter(todo => todo.id !== id); 
         })
         }
+
+    function deleteTaskDaily(id) {
+        setTodosB(currentTasks => {
+            return currentTasks.filter(todo => todo.id !== id);
+        })
+    }
     
     function deleteTaskLong(id) {
         setTodosC(currentTasks => {
@@ -303,7 +309,7 @@ export default function TaskGenerator( {archiveTask} ) {
                 })
 
             }, timeToRest * 3.6e+6 );
-            //
+            
             
             //reset the streak 24 hours after click if color is green
             setTimeout(() => {
@@ -311,7 +317,7 @@ export default function TaskGenerator( {archiveTask} ) {
                 resetStreak(id, streak, streakColor);
                 }
             }, 8.64e+7)
-            //
+            
         
         }
 
@@ -360,7 +366,7 @@ export default function TaskGenerator( {archiveTask} ) {
                         <Button onClick={handleOpen}>
                             <div id="button-container">
                                 
-                                <Icon name="plus" size="large"/>
+                                <Icon name="plus" color="black" size="large"/>
                             </div>
                         </Button> 
                     </div>
@@ -398,7 +404,7 @@ export default function TaskGenerator( {archiveTask} ) {
                             <h2>Priority</h2>
                     </div>
                     <div id="seemore-container">
-                        <button class="mini ui grey basic button" onClick={() => {setSeeNotesPriority(!seeNotesPriority)
+                        <button class="ui inverted button" onClick={() => {setSeeNotesPriority(!seeNotesPriority)
                                             setNoteButtonPriority(!noteButtonPriority)}}>{!noteButtonPriority ? 'See Notes' : 'Hide Notes'}</button>            
                     </div>
                 </div> 
@@ -417,7 +423,9 @@ export default function TaskGenerator( {archiveTask} ) {
                                             <div id="todo-textbox">
                                             <div id="title-date">
                                                     <div id="title"><h1>{todo.title}</h1></div>
-                                                    <div id="emoji">🎯</div>
+                                                    <div id="emoji">
+                                                        <div>🎯</div>
+                                                    </div>
                                                 </div>
                                                 <br></br>
                                                 {seeNotesPriority ? <p id="notes">{todo.notes}</p> : null}
@@ -457,11 +465,11 @@ export default function TaskGenerator( {archiveTask} ) {
                         <h2>Daily</h2>
                     </div>
                     <div id="seemore-container">
-                        <button class="mini ui grey basic button" onClick={() => {
+                        <button class="ui inverted button" onClick={() => {
                             setSeeNotesDaily(!seeNotesDaily);
                             setNoteButtonDaily(!noteButtonDaily);
                             }} >
-                            {!noteButtonDaily ? 'See Notes' : 'Hide'}
+                            {!noteButtonDaily ? 'See Notes' : 'Hide Notes'}
                         </button>
                     </div>
                 </div> 
@@ -480,7 +488,7 @@ export default function TaskGenerator( {archiveTask} ) {
                                                 <div id="title-date">
                                                     <div id="title"><h1>{todo.title}</h1></div>
                                                     <div id="emoji">
-                                                        <div>{todo.streak}</div>
+                                                        <p>{todo.streak}</p>
                                                         <div> 🔥</div>
                                                     </div>
                                                 </div>
@@ -499,8 +507,8 @@ export default function TaskGenerator( {archiveTask} ) {
                                                 
                                                     
                                                     <div id="trash">
-                                                        <Icon onClick={() => resetStreak(todo.id, todo.streak, todo.streakColor)}
-                                                         name="redo alternate" color="red" size="large"></Icon> 
+                                                        <Icon onClick={() => {deleteTaskDaily(todo.id)}}
+                                                         name="trash alternate outline"color="red" size="large"></Icon> 
                                                     </div>
 
                                                 </div>
@@ -532,8 +540,8 @@ export default function TaskGenerator( {archiveTask} ) {
                         <h2>Long term</h2>
                     </div>
                     <div id="seemore-container">
-                        <button class="mini ui grey basic button" onClick={() => {setSeeNotesLong(!seeNotesLong)
-                                            setNoteButtonLong(!noteButtonLong)}}>{!noteButtonLong ? 'See Notes' : 'Hide'}</button>
+                        <button class="ui inverted button" onClick={() => {setSeeNotesLong(!seeNotesLong)
+                                            setNoteButtonLong(!noteButtonLong)}}>{!noteButtonLong ? 'See Notes' : 'Hide Notes'}</button>
                     </div>
                 </div> 
                 <div id="line-break"></div>                    
@@ -550,7 +558,9 @@ export default function TaskGenerator( {archiveTask} ) {
                                             <div id="todo-textbox">
                                             <div id="title-date">
                                                     <div id="title"><h1>{todo.title}</h1></div>
-                                                    <div id="emoji">🏆</div>
+                                                    <div id="emoji">
+                                                        <div>🏆</div>
+                                                    </div>
                                                 </div>
                                                 <br></br>
                                                 {seeNotesLong ? <p id="notes">{todo.notes}</p> : null}
@@ -641,19 +651,11 @@ export default function TaskGenerator( {archiveTask} ) {
 /*  
 Things to add:
     - Styling :
-         - cooler font (APPLE?)
-         Change color palate to be cleaner
-         header // foot colours 
          task form update
          grid style to archived tasks
-         make cards cleaner // more structured. 
+         number of task to display different color based
+         on how many tasks are in its container. 
 
-    - funcitonality: 
-        daily tasks show "come back tommorow" once checked
-           - revert to tick after once next day comes around?
-        
-        archieved daily tasks show the longest streak. 
-        fix hide notes buttons to all be same. 
 
         
 */

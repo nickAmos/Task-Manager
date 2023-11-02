@@ -1,22 +1,33 @@
+html {
+    overflow: hidden;
+    height: 100%;
+}
 
+body {
+    overflow: auto;
+    height: 100%;
+}
 .Header {
     width: 100vw;
     height: 15vh;
-    background-color: white;
+    background-color: #101013;
     display: flex;
     justify-content:center ;
     align-items: center;
+    /*#0f4162*/
 }
 
 #title-container, #button-container, #timedisplay-container {
     width: 33vw;
     display: flex;
+    color: white;
     align-items: center;
 }
 
 #title-container h1 {
     font-family: 'Poppins', Regular 400;
     font-weight: 600;
+    color: white;
     font-size: 3rem;
     padding-left: 10%;
 }
@@ -27,20 +38,12 @@
     position: absolute;
   opacity: 0;
   cursor: pointer;
-
 }
-
-
-
 #streaks-container {
-    height: 30px;
-    width: 30px;
+    font-size: 1rem;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
 }
-
- 
-
-
-
 #button-container {
     flex-direction: column-reverse;
     height: 2.5rem;
@@ -49,7 +52,7 @@
 
 #button-container button {
     width: 50%;
-    background-color: rgb(235, 245, 241);
+    background-color: rgb(255, 255, 255);
     border-radius: 15px;
     color: rgb(39, 95, 67);
 }
@@ -73,7 +76,10 @@
 
 
 #todo-container {
-    border: 1.5px solid grey;
+    border-top: 1.3px solid rgb(0, 0, 0);;
+    border-bottom: 1.3px solid rgb(0, 0, 0);;
+    border-left: 1.3px solid rgb(0, 0, 0);;
+    border-right: 1.3px solid rgb(0, 0, 0);;
     border-radius: 15px;
     background-color: white ;
     width: auto;
@@ -110,8 +116,16 @@
     width: 65px;
     font-size: 2rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-evenly;
+}
+
+#emoji p {
+    font-size: 1.5rem;
+}
+
+#emoji div {
+    padding-top: 5px;
 }
 
 .Priority-Tasks, .Daily-Tasks, .Longterm-Tasks {
@@ -119,16 +133,11 @@
     height: 80%;
     overflow-y: auto;
     border-radius: 15px;
-    background-color: rgba(255, 255, 255, 0.421);
+    background-color: #d1d1d1;
+    /*#dce8e8 */
 }
 
-#todo-textbox-daily {
-    background-color: red;
-}
 
-#todo-textbox-daily:has(input:checked)  {
-    background-color: greenyellow;
-}
 
 .Longterm-Tasks #todo-textbox {
     background-color: rgb(255, 255, 255);
@@ -139,28 +148,38 @@
 
 
 #todo-textbox {
-    padding: 25px 25px 0px 15px;
+    padding: 10px 15px 0px 15px;
 }
 
 #title-date {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 
 #title {
+    
     flex-grow: 1;
 }
 
+#title h1 {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    
+}
+
 #notes {
-    font-size: large;
-    color: rgb(99, 99, 99);
+    font-size: 1rem;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
 }
 
 
 #task-category-flex {
     display: flex;
+    background-color: #101013;
     flex-direction:row;
     justify-content: space-around;
     height: 70vh;
@@ -172,9 +191,9 @@
     justify-content: center;
     align-items: center;
     width: 30px;
-    background-color: rgb(220, 237, 229);
+    background-color: rgb(255, 255, 255);
     border-radius: 5px;
-    color: grey;
+    color: rgb(0, 0, 0);
 
 }
 
@@ -189,16 +208,19 @@
 #seemore-container {
     padding-right: 15px;
     height: 30px;
+    
 }
 
 #task-icon-name {
     display: flex;
     align-items: center;
     padding-left: 15px;
+    color: black
 }
 
 #task-icon-name h2 {
     margin: 0;
+    color: #e5e8ed;
     padding-left: 15px;
 }
 
@@ -208,16 +230,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgb(220, 253, 240);
+    background-color: #1c1d24;
     border-radius: 15px;
     height: 70vh;
     width: 27.5%;
+    /*#101013*/
 }
 
 .Footer-container {
     width: 100vw;
     height: 15vh;
-    background-color: white;
+    background-color: #101013;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -234,14 +257,14 @@
     width: 80%;
     height: 5rem;
     border-radius: 15px;
-    background-color: rgb(235, 245, 241);
+    background-color: rgb(255, 255, 255);
     
 }
 
 #line-break {
     width: 90%;
     height: 3px;
-    background-color: rgb(39, 95, 67);
+    background-color:#8c8c8c;
     border-radius: 5px;
     margin-bottom: 15px;
 }
@@ -262,8 +285,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(235, 245, 241);
-    color: rgb(39, 95, 67);
+    background-color: rgb(255, 255, 255);
+    color:  #1c1d24;
 }
 
 
