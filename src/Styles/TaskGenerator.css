@@ -310,4 +310,59 @@ body {
 
 
 
+/* Stylign for modal */
 
+#task-form {
+    display: flex;
+    justify-content:center ;
+    align-items: center;
+}
+
+#form-container {
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+#formName, #formNotes, #formDate {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+    height: 3rem;
+}
+
+#formTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+}
+
+#formNotes {
+    height: 100px;
+}
+
+#formNotes textarea {
+    height: 100px;
+    width: 250px;
+}
+
+#formName p, #formDate p {
+    padding-top: 10px;
+}
+
+#formName input {
+    width: 175px;
+    border-radius: 5px;
+    border: 1px solid #8c8c8c;
+}
+
+#formDate input {
+    width: 175px;
+}
+
+#formName input::placeholder {
+    text-align: center;
+}

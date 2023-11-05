@@ -15,7 +15,6 @@ export default function TaskGenerator( {archiveTask} ) {
 
     //All state for Tasks
     const [newObject, setNewObject] = useState('');
-    const [timeline, setTimeLine] = useState('');
     const [tasktype, setTasktype] = useState('');
     const [date, setDate] = useState('');
     const [notes, setNotes] = useState('');
@@ -178,7 +177,6 @@ export default function TaskGenerator( {archiveTask} ) {
                         ...currentObject, 
                         {id: crypto.randomUUID(),
                         title: newObject,
-                        timeLine: timeline,
                         taskType: tasktype,
                         due: date,
                         completed: false,
@@ -197,7 +195,6 @@ export default function TaskGenerator( {archiveTask} ) {
                         ...currentObject, 
                         {id: crypto.randomUUID(),
                         title: newObject,
-                        timeLine: timeline,
                         taskType: tasktype,
                         due: date,
                         streak: 0,
@@ -213,7 +210,6 @@ export default function TaskGenerator( {archiveTask} ) {
                         ...currentObject, 
                         {id: crypto.randomUUID(),
                         title: newObject,
-                        timeLine: timeline,
                         taskType: tasktype,
                         due: date,
                         streak: 0,
@@ -225,7 +221,6 @@ export default function TaskGenerator( {archiveTask} ) {
             
     
         setNewObject('');
-        setTimeLine('');
         setTasktype('');
         setNotes('');
         handleClose();
@@ -347,7 +342,8 @@ export default function TaskGenerator( {archiveTask} ) {
     //Styles modal
     const style = {
         position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-        width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4,
+        width: 450, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4,
+        borderRadius: 5
       };
       //render
 
@@ -378,15 +374,27 @@ export default function TaskGenerator( {archiveTask} ) {
                 </div>
                 <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                         <Box sx={style}>
-                            <form onSubmit={handleSubmit} id="task-form">                                
-                                <input value={newObject} autocomplete="off" type="text" placeholder="Task Name" id="item" onChange={e => setNewObject(e.target.value)} required/>
-                                <input type="date" onChange={e => setDate(e.target.value)} />
-                                <input value={timeline} type="text" placeholder="type here" onChange={e => setTimeLine(e.target.value)} id="timeline"/>
-                                <input type="text" placeholder="Add notes" autocomplete="off" value={notes} id="notes" onChange={e => setNotes(e.target.value)}/>
-                                <div class="ui buttons">
-                                    <button value='Priority' onClick={e => {setTasktype(e.target.value);}} class="ui blue basic button">Priority</button>
-                                    <button value='Daily' onClick={e => {setTasktype(e.target.value);}} class="ui red basic button">Daily</button>
-                                    <button value='Longterm' onClick={e => {setTasktype(e.target.value);}} class="ui green basic button">Long-Term</button>
+                            <form onSubmit={handleSubmit} id="task-form">
+                                <div id="form-container">
+                                    <div id="formTitle">
+                                        <h2>Create new task</h2>
+                                    </div>
+                                    <div id="formName">
+                                        <p>task name</p>                               
+                                    <input value={newObject} autocomplete="off" type="text" placeholder="(required)" id="item" onChange={e => setNewObject(e.target.value)} required/>
+                                    </div>
+                                    <div id="formNotes">
+                                        <textarea type="text" placeholder="Add notes" autocomplete="off" value={notes} id="notes" onChange={e => setNotes(e.target.value)}/>
+                                    </div>
+                                    <div id="formDate">
+                                        <p>due date</p>  
+                                        <input type="date" onChange={e => setDate(e.target.value)} />
+                                    </div>
+                                    <div id="formSubmit" class="ui buttons">
+                                        <button value='Priority' onClick={e => {setTasktype(e.target.value);}} class="ui blue basic button">Priority</button>
+                                        <button value='Daily' onClick={e => {setTasktype(e.target.value);}} class="ui red basic button">Daily</button>
+                                        <button value='Longterm' onClick={e => {setTasktype(e.target.value);}} class="ui green basic button">Long-Term</button>
+                                    </div> 
                                 </div> 
                             </form>
                         </Box>
@@ -657,5 +665,6 @@ Things to add:
          on how many tasks are in its container. 
 
 
-        
+    -functionality :
+    fix "come back tommor displayed once a longterm or prioirt is dragged to itl"
 */
