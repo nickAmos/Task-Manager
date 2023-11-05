@@ -133,9 +133,21 @@ body {
     height: 80%;
     overflow-y: auto;
     border-radius: 15px;
-    background-color: #d1d1d1;
-    /*#dce8e8 */
+    border: #101013 2px solid;
+    background-color: #2a2b34;
 }
+
+/*.Daily-Tasks{
+    background-color: #baffc9;
+}
+
+.Priority-Tasks {
+    background-color: #ffb3ba;
+}
+
+.Longterm-Tasks {
+    background-color: #bae1ff;
+} */
 
 
 
@@ -257,16 +269,28 @@ body {
     width: 80%;
     height: 5rem;
     border-radius: 15px;
-    background-color: rgb(255, 255, 255);
+    border: #101013 solid 2px;
+    background-color: #2a2b34;
     
 }
 
-#line-break {
+#line-break-pri, #line-break-daily, #line-break-long {
     width: 90%;
     height: 3px;
-    background-color:#8c8c8c;
     border-radius: 5px;
     margin-bottom: 15px;
+}
+
+#line-break-pri {
+    background-color: #ffb3ba;
+}
+
+#line-break-daily {
+    background-color: #baffc9;
+}
+
+#line-break-long {
+    background-color: #bae1ff;
 }
 
 #reveal-container {
@@ -285,8 +309,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(255, 255, 255);
-    color:  #1c1d24;
+    background-color: #2a2b34;
+    color:  #ffffff;
+    cursor: pointer;
+    
 }
 
 
@@ -299,10 +325,11 @@ body {
     justify-content: center;
     align-items: center;
     height: 50px;
+    cursor: pointer;
 }
 
 #text-container p {
-    color: black;
+    color: #ffffff;
     font-size: larger;
 }
 
@@ -330,7 +357,7 @@ body {
     display: flex;
     justify-content: space-between;
     width: 250px;
-    height: 3rem;
+    height: 2rem;
 }
 
 #formTitle {
@@ -338,6 +365,7 @@ body {
     align-items: center;
     justify-content: center;
     width: 250px;
+    color: #e5e8ed;
 }
 
 #formNotes {
@@ -347,10 +375,12 @@ body {
 #formNotes textarea {
     height: 100px;
     width: 250px;
+    resize: none;
 }
 
 #formName p, #formDate p {
-    padding-top: 10px;
+    padding-top: 5px;
+    color: #e5e8ed;
 }
 
 #formName input {
@@ -360,9 +390,18 @@ body {
 }
 
 #formDate input {
-    width: 175px;
+    width: 180px;
 }
 
 #formName input::placeholder {
     text-align: center;
+    font-size: smaller;
+}
+
+#formSubmit {
+    width: 250px;
+}
+
+#formSubmit button {
+    width: 50px;
 }

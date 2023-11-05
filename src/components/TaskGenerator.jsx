@@ -198,7 +198,8 @@ export default function TaskGenerator( {archiveTask} ) {
                         taskType: tasktype,
                         due: date,
                         streak: 0,
-                        notes: notes
+                        notes: notes,
+                        streakColor: 'green'
                         
                     },
                     ]
@@ -213,7 +214,8 @@ export default function TaskGenerator( {archiveTask} ) {
                         taskType: tasktype,
                         due: date,
                         streak: 0,
-                        notes: notes
+                        notes: notes,
+                        streakColor: 'green'
                     },
                     ]
                 }) 
@@ -342,7 +344,7 @@ export default function TaskGenerator( {archiveTask} ) {
     //Styles modal
     const style = {
         position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-        width: 450, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4,
+        width: 450, bgcolor: '#101013', border: '2px solid #000', boxShadow: 24, p: 4,
         borderRadius: 5
       };
       //render
@@ -351,7 +353,8 @@ export default function TaskGenerator( {archiveTask} ) {
    
     return(
         
-        <>     
+        <>   
+        <DragDropContext onDragEnd={handleDragDrop}>   
                 <div className="Header">
 
                     <div id="title-container">
@@ -372,7 +375,7 @@ export default function TaskGenerator( {archiveTask} ) {
                     </div>
 
                 </div>
-                <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+                <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">  
                         <Box sx={style}>
                             <form onSubmit={handleSubmit} id="task-form">
                                 <div id="form-container">
@@ -391,16 +394,16 @@ export default function TaskGenerator( {archiveTask} ) {
                                         <input type="date" onChange={e => setDate(e.target.value)} />
                                     </div>
                                     <div id="formSubmit" class="ui buttons">
-                                        <button value='Priority' onClick={e => {setTasktype(e.target.value);}} class="ui blue basic button">Priority</button>
-                                        <button value='Daily' onClick={e => {setTasktype(e.target.value);}} class="ui red basic button">Daily</button>
-                                        <button value='Longterm' onClick={e => {setTasktype(e.target.value);}} class="ui green basic button">Long-Term</button>
+                                        <button value='Priority' onClick={e => {setTasktype(e.target.value);}} class="ui inverted red button">Priority</button>
+                                        <button value='Daily' onClick={e => {setTasktype(e.target.value);}} class="ui inverted green button">Daily</button>
+                                        <button value='Longterm' onClick={e => {setTasktype(e.target.value);}} class="ui inverted blue button">Goals</button>
                                     </div> 
                                 </div> 
                             </form>
                         </Box>
                 </Modal>        
 
-            <DragDropContext onDragEnd={handleDragDrop}> 
+            
 
             <div id="task-category-flex">
 
@@ -416,7 +419,7 @@ export default function TaskGenerator( {archiveTask} ) {
                                             setNoteButtonPriority(!noteButtonPriority)}}>{!noteButtonPriority ? 'See Notes' : 'Hide Notes'}</button>            
                     </div>
                 </div> 
-                <div id="line-break"></div>          
+                <div id="line-break-pri"></div>          
                 <Droppable droppableId="Priority-Tasks" type="group">
                     {(provided) => (
                         <div className="Priority-Tasks" {...provided.droppableProps} ref={provided.innerRef}>
@@ -481,7 +484,7 @@ export default function TaskGenerator( {archiveTask} ) {
                         </button>
                     </div>
                 </div> 
-                <div id="line-break"></div>                        
+                <div id="line-break-daily"></div>                        
                 <Droppable droppableId="Daily-Tasks" type="group">
                     {(provided) => (
                         <div className="Daily-Tasks" {...provided.droppableProps} ref={provided.innerRef}>
@@ -545,14 +548,14 @@ export default function TaskGenerator( {archiveTask} ) {
                 <div className="Task-Type-container">
                     <div id="task-icon-name">
                         <div id="task-counter">{todosC.length}</div> 
-                        <h2>Long term</h2>
+                        <h2>Goals</h2>
                     </div>
                     <div id="seemore-container">
                         <button class="ui inverted button" onClick={() => {setSeeNotesLong(!seeNotesLong)
                                             setNoteButtonLong(!noteButtonLong)}}>{!noteButtonLong ? 'See Notes' : 'Hide Notes'}</button>
                     </div>
                 </div> 
-                <div id="line-break"></div>                    
+                <div id="line-break-long"></div>                    
                 <Droppable droppableId="Longterm-Tasks" type="group">
                     {(provided) => (
                         <div className="Longterm-Tasks" {...provided.droppableProps} ref={provided.innerRef}>
