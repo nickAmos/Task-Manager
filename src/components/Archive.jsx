@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import '../Styles/Archive.css';
 
 export default function Archive( {archiveTasks, removeArchivedTask, removeAllArchived} ) {
 
@@ -7,39 +8,60 @@ export default function Archive( {archiveTasks, removeArchivedTask, removeAllArc
 
 
     return(
-        <>
-        <h1>Arachive tasks</h1>
+        <div id="archive-body">
 
-        <>
-            {archiveTasks.map((todo) => (
-        
-                <>
-                    {todo.title ? 
-                    <div key={todo.id}>
-                        <h1>{todo.title}</h1>
-                        <p>ID: {todo.id}</p>
-              
-                        <p>task type: {todo.taskType}</p>
-                        <p>Due: {todo.due}</p>
-                        <button onClick={() => {
-                            removeArchivedTask(todo.id);
-                        }}>Clear Task</button>
-                    </div> 
+            <header>
+                <h1>Arachive tasks</h1>
+            </header>
+
+            <section>
+
+                <div id="conditional-container"> 
+                <div id="flex-container">
+                    {archiveTasks.length > 0 ? 
+                        <>
+                        {/*Below defines the  grid set up for when an archive task exists */}
+                            <div class="grid-container">{archiveTasks.map((todo) => (<div> {todo.title ? //generates each archived task
+                                    <div class="grid-item"> 
+                                        <div key={todo.id}>
+                                            <h1>{todo.title}</h1>              
+                                            <p>task type: {todo.taskType}</p>
+                                            {todo.due ? <p>{todo.due}</p> : null}
+                                            <button onClick={() => {removeArchivedTask(todo.id);}}>
+                                                Clear Task
+                                            </button>
+                                        </div>
+                                    </div>: null }  
+                                </div>
+                                    ))}
+                            </div>
+                        </>
                     
-                    : null }  
-                </>
-                ))}
+                    : <div id="no-render">
+                        <p>no tasks, go grind.</p>
+                    </div>}
+                </div>
+                
 
+
+                </div>
+
+                    
+
+            </section>
+
+        
+            <footer>
+                <Link to='/'>
+                    <div id="go-home">go back</div>
+                </Link>
                 <button onClick={() => {
-                    removeAllArchived();
-                }}>Remove all completed</button>
-            </>
+                        removeAllArchived();
+                    }}>Remove all completed</button>
+            </footer>
 
-        <Link to='/'>
-            <div>go back</div>
-        </Link>
-
-        </>
+        </div>
+       
         
     )
 }

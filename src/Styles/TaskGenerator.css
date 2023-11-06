@@ -95,6 +95,7 @@ body {
 #checked, #trash {
     height: 30px;
     display: flex;
+    cursor: pointer;
     justify-content: center;
     width: 40px;
    

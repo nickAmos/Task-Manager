@@ -659,15 +659,3 @@ export default function TaskGenerator( {archiveTask} ) {
        
     )
 }
-/*  
-Things to add:
-    - Styling :
-         task form update
-         grid style to archived tasks
-         number of task to display different color based
-         on how many tasks are in its container. 
-
-
-    -functionality :
-    fix "come back tommor displayed once a longterm or prioirt is dragged to itl"
-*/

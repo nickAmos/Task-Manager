@@ -54,3 +54,16 @@ function removeAllArchived() {
 }
 
 export default App;
+
+
+/*  
+Things to add:
+    - Styling :
+         grid style to archived tasks
+         
+
+
+    -functionality :
+        responsiveness to archvie.
+   
+*/
