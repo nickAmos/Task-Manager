@@ -11,40 +11,52 @@ export default function Archive( {archiveTasks, removeArchivedTask, removeAllArc
         <div id="archive-body">
 
             <header>
-                <h1>Arachive tasks</h1>
+                <div id="header-flex">
+                    <h1 id="archive-title">Arachived tasks</h1>
+                </div>
             </header>
 
-            <section>
-
-                <div id="conditional-container"> 
-                <div id="flex-container">
+            <section>               
                     {archiveTasks.length > 0 ? 
                         <>
                         {/*Below defines the  grid set up for when an archive task exists */}
                             <div class="grid-container">{archiveTasks.map((todo) => (<div> {todo.title ? //generates each archived task
                                     <div class="grid-item"> 
-                                        <div key={todo.id}>
-                                            <h1>{todo.title}</h1>              
-                                            <p>task type: {todo.taskType}</p>
-                                            {todo.due ? <p>{todo.due}</p> : null}
-                                            <button onClick={() => {removeArchivedTask(todo.id);}}>
-                                                Clear Task
-                                            </button>
+                                        <div key={todo.id} id="card-container">
+
+                                            <div id="top-bar">
+                                                <button id="recycle-button" class="ui inverted green button">
+                                                    <i class="recycle icon"></i>
+                                                </button>
+                                                <h1>{todo.title}</h1> 
+                                                <button id="trash-button" class="ui inverted red button" onClick={() => {removeArchivedTask(todo.id);}}>
+                                                    <i class="trash alternate outline icon"></i>
+                                                </button>
+                                            </div>
+                                            <div id="bottom-bar">
+                                                {todo.taskType === 'Priority' ? <div>🎯</div> : null}
+                                                {todo.taskType === 'Daily' ? <div>🔥</div> : null}
+                                                {todo.taskType === 'Longterm' ? <div>🏆</div> : null}
+                                            </div>
+                                            
                                         </div>
                                     </div>: null }  
-                                </div>
+                            </div>
                                     ))}
+
                             </div>
                         </>
-                    
-                    : <div id="no-render">
-                        <p>no tasks, go grind.</p>
-                    </div>}
-                </div>
+                    : null}
+
+                { archiveTasks.length === 0?
+                    <div id="conditional-container"> 
+                        <div id="flex-container">
+                        <div id="no-render">
+                            <p>no tasks, go grind.</p>
+                        </div> 
+                    </div>
                 
-
-
-                </div>
+                </div>: null}
 
                     
 
@@ -52,12 +64,23 @@ export default function Archive( {archiveTasks, removeArchivedTask, removeAllArc
 
         
             <footer>
-                <Link to='/'>
-                    <div id="go-home">go back</div>
-                </Link>
-                <button onClick={() => {
-                        removeAllArchived();
-                    }}>Remove all completed</button>
+            <div id="footer-flex">
+                <div id="left-child">
+                    <Link to='/'>
+                        <button class="ui inverted white button">
+                        <div id="go-home">
+                            <i class="arrow alternate circle left outline icon"></i>
+                            <p>Return to dashboard</p>
+                        </div>
+                        </button>
+                    </Link>
+                </div>
+                <div id="right-child">
+                    <button  onClick={() => {
+                            removeAllArchived();
+                        }} class="ui inverted red button"><p>Remove all completed</p></button>
+                </div>
+            </div>
             </footer>
 
         </div>
