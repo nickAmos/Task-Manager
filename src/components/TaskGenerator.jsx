@@ -43,6 +43,12 @@ export default function TaskGenerator( {archiveTask} ) {
         
     }); 
 
+    /*const returnPriority = (task) => {
+        setTodosA((current) => {
+            return [...current, task];
+        })
+      }; */
+
     function minutesDiff(dateTime1, dateTime2, id, streak, streakColor) {
         console.log(`Date time one is: ${dateTime1.getTime()} (${dateTime1}) and date time two is: ${dateTime2.getTime()} (${dateTime2})`)
         let differenceValueMili = (dateTime1.getTime() - dateTime2.getTime());
@@ -659,3 +665,5 @@ export default function TaskGenerator( {archiveTask} ) {
        
     )
 }
+
+

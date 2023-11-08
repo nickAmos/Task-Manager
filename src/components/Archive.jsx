@@ -25,20 +25,14 @@ export default function Archive( {archiveTasks, removeArchivedTask, removeAllArc
                                         <div key={todo.id} id="card-container">
 
                                             <div id="top-bar">
-                                                <button id="recycle-button" class="ui inverted green button">
-                                                    <i class="recycle icon"></i>
-                                                </button>
+                                                {todo.taskType === 'Priority' ? <div>🎯</div> : null}
+                                                {todo.taskType === 'Daily' ? <div>🔥</div> : null}
+                                                {todo.taskType === 'Longterm' ? <div>🏆</div> : null}
                                                 <h1>{todo.title}</h1> 
                                                 <button id="trash-button" class="ui inverted red button" onClick={() => {removeArchivedTask(todo.id);}}>
                                                     <i class="trash alternate outline icon"></i>
                                                 </button>
-                                            </div>
-                                            <div id="bottom-bar">
-                                                {todo.taskType === 'Priority' ? <div>🎯</div> : null}
-                                                {todo.taskType === 'Daily' ? <div>🔥</div> : null}
-                                                {todo.taskType === 'Longterm' ? <div>🏆</div> : null}
-                                            </div>
-                                            
+                                            </div>                        
                                         </div>
                                     </div>: null }  
                             </div>

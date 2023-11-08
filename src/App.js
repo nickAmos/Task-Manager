@@ -59,13 +59,5 @@ export default App;
 /*  
 Things to add:
     - Styling :
-         grid style to archived tasks
          overall stlying so everthing matches (fonts ect.)
-         
-
-
-    -functionality :
-        responsiveness to archvie.
-        restore button to place task back in active tasks
-   
 */
