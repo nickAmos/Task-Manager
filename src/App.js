@@ -22,7 +22,7 @@ function App() {
     window.localStorage.setItem('Completed', JSON.stringify(completedTasks))
     console.log(archiveTasks.length);
     setCompletedTasks(archiveTasks.length);
-}, [archiveTasks]);
+}, [archiveTasks, completedTasks]);
 
   const archiveTask = (task) => { 
     setArchiveTasks((current) =>{
@@ -60,4 +60,7 @@ export default App;
 Things to add:
     - Styling :
          overall stlying so everthing matches (fonts ect.)
+
+    - functionality:
+        add modal to delete all to confirm if youre sure.
 */

@@ -152,6 +152,35 @@ footer{
     padding: 7px 0 7px 9px;
     height: 30px;
   }
+  #confirm-container {
+    height: 150px;
+    width: 375px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #box-one, #box-two {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #box-one {
+    width: 90%;
+  }
+
+  #box-two {
+    width: 80%;
+  }
+
+  #box-one p {
+    font-size: 1.45rem;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    color: white;
+    text-align: center;
+  }
 
  @media only screen  and (max-width: 1400px) {
   .grid-container {
@@ -187,3 +216,6 @@ footer{
   }
 
  }
+
+
+ 

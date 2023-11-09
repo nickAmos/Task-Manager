@@ -101,8 +101,7 @@ export default function TaskGenerator( {archiveTask} ) {
                     const copyofTodosD = [...todosD];
 
         if (destinationDrop === 'Archive') {
-            console.log('dropped in archive');
-            console.log('dropped in archive');
+            
         }
          
 
@@ -257,7 +256,7 @@ export default function TaskGenerator( {archiveTask} ) {
 
         if (streakColor === 'green') {
 
-           console.log('ran');
+   
 
            let today = dateDisplay;
 
@@ -297,8 +296,11 @@ export default function TaskGenerator( {archiveTask} ) {
                 })
             })
 
+            console.log(timeToRest);
+
             setTimeout(() => {
                 setTodosB(currentTasks => {
+                    console.log("i RAN (timeout)")
                     return currentTasks.map(todo => {
                         if (todo.id === id) {
                             if (completed === true) {
