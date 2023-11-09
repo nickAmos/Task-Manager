@@ -25,8 +25,8 @@ body {
 }
 
 #title-container h1 {
-    font-family: 'Poppins', Regular 400;
-    font-weight: 600;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 300;
     color: white;
     font-size: 3rem;
     padding-left: 10%;
@@ -184,9 +184,10 @@ body {
 }
 
 #notes {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-family: 'Barlow', sans-serif;
     font-weight: 300;
+    padding-top: 5px;
 }
 
 
@@ -198,16 +199,26 @@ body {
     height: 70vh;
 }
 
-#task-counter {
+#task-counter-daily, #task-counter-priority, #task-counter-longterm {
     height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 30px;
-    background-color: rgb(255, 255, 255);
     border-radius: 5px;
     color: rgb(0, 0, 0);
+}
 
+#task-counter-daily {
+    background-color: #baffc9;
+}
+
+#task-counter-priority {
+    background-color: #ffb3ba;
+}
+
+#task-counter-longterm {
+    background-color: #bae1ff;
 }
 
 .Task-Type-container {

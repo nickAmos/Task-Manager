@@ -21,10 +21,10 @@ export default function TaskGenerator( {archiveTask} ) {
 
     const [seeNotesPriority, setSeeNotesPriority] = useState(true);
     const [noteButtonPriority, setNoteButtonPriority] = useState(true);
-    const [seeNotesDaily, setSeeNotesDaily] = useState(false);
-    const [noteButtonDaily, setNoteButtonDaily] = useState(false);
-    const [seeNotesLong, setSeeNotesLong] = useState(false);
-    const [noteButtonLong, setNoteButtonLong] = useState(false);
+    const [seeNotesDaily, setSeeNotesDaily] = useState(true);
+    const [noteButtonDaily, setNoteButtonDaily] = useState(true);
+    const [seeNotesLong, setSeeNotesLong] = useState(true);
+    const [noteButtonLong, setNoteButtonLong] = useState(true);
 
     const [todosA, setTodosA] = useState([]);
     const [todosB, setTodosB] = useState([]);
@@ -318,8 +318,9 @@ export default function TaskGenerator( {archiveTask} ) {
             
             //reset the streak 24 hours after click if color is green
             setTimeout(() => {
-                if (streakColor = 'green') {
+                if (streakColor === 'green') {
                 resetStreak(id, streak, streakColor);
+                
                 }
             }, 8.64e+7)
             
@@ -392,7 +393,7 @@ export default function TaskGenerator( {archiveTask} ) {
                                     </div>
                                     <div id="formName">
                                         <p>task name</p>                               
-                                    <input value={newObject} autocomplete="off" type="text" placeholder="(required)" id="item" onChange={e => setNewObject(e.target.value)} required/>
+                                    <input value={newObject} autocomplete="off" type="text" autoFocus placeholder="(required)" id="item" onChange={e => setNewObject(e.target.value)} required/>
                                     </div>
                                     <div id="formNotes">
                                         <textarea type="text" placeholder="Add notes" autocomplete="off" value={notes} id="notes" onChange={e => setNotes(e.target.value)}/>
@@ -419,7 +420,7 @@ export default function TaskGenerator( {archiveTask} ) {
                 <div id="priority-container">
                 <div className="Task-Type-container">
                     <div id="task-icon-name">
-                        <div id="task-counter">{todosA.length}</div>  
+                        <div id="task-counter-priority">{todosA.length}</div>  
                             <h2>Priority</h2>
                     </div>
                     <div id="seemore-container">
@@ -446,7 +447,7 @@ export default function TaskGenerator( {archiveTask} ) {
                                                         <div>🎯</div>
                                                     </div>
                                                 </div>
-                                                <br></br>
+                                                
                                                 {seeNotesPriority ? <p id="notes">{todo.notes}</p> : null}
                                                 
                                                 <div id="delete-complete">
@@ -480,7 +481,7 @@ export default function TaskGenerator( {archiveTask} ) {
                 <div id="daily-container">
                 <div className="Task-Type-container">
                 <div id="task-icon-name">
-                <div id="task-counter">{todosB.length}</div> 
+                <div id="task-counter-daily">{todosB.length}</div> 
                         <h2>Daily</h2>
                     </div>
                     <div id="seemore-container">
@@ -511,7 +512,7 @@ export default function TaskGenerator( {archiveTask} ) {
                                                         <div> 🔥</div>
                                                     </div>
                                                 </div>
-                                                <br></br>
+                                             
                                                 {seeNotesDaily ? <p id="notes">{todo.notes}</p> : null}
                                                 
                                                 <div id="delete-complete">
@@ -555,7 +556,7 @@ export default function TaskGenerator( {archiveTask} ) {
                 <div id="longterm-container"> 
                 <div className="Task-Type-container">
                     <div id="task-icon-name">
-                        <div id="task-counter">{todosC.length}</div> 
+                        <div id="task-counter-longterm">{todosC.length}</div> 
                         <h2>Goals</h2>
                     </div>
                     <div id="seemore-container">
@@ -581,7 +582,7 @@ export default function TaskGenerator( {archiveTask} ) {
                                                         <div>🏆</div>
                                                     </div>
                                                 </div>
-                                                <br></br>
+                                               
                                                 {seeNotesLong ? <p id="notes">{todo.notes}</p> : null}
                                                 
                                                 <div id="delete-complete">

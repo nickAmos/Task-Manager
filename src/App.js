@@ -62,5 +62,5 @@ Things to add:
          overall stlying so everthing matches (fonts ect.)
 
     - functionality:
-        add modal to delete all to confirm if youre sure.
+       
 */
