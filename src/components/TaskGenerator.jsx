@@ -392,14 +392,14 @@ export default function TaskGenerator( {archiveTask} ) {
                                         <h2>Create new task</h2>
                                     </div>
                                     <div id="formName">
-                                        <p>task name</p>                               
+                                        <p>Task name</p>                               
                                     <input value={newObject} autocomplete="off" type="text" autoFocus placeholder="(required)" id="item" onChange={e => setNewObject(e.target.value)} required/>
                                     </div>
                                     <div id="formNotes">
                                         <textarea type="text" placeholder="Add notes" autocomplete="off" value={notes} id="notes" onChange={e => setNotes(e.target.value)}/>
                                     </div>
                                     <div id="formDate">
-                                        <p>due date</p>  
+                                        <p>Due date</p>  
                                         <input type="date" onChange={e => setDate(e.target.value)} />
                                     </div>
                                     <div id="formSubmit" class="ui buttons">

@@ -59,8 +59,9 @@ export default App;
 /*  
 Things to add:
     - Styling :
-         overall stlying so everthing matches (fonts ect.)
+         
 
     - functionality:
+      make front page responsive?
        
 */
