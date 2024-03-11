@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/Task-Manager/static/css/main.1e3433c2.css",
-    "main.js": "/Task-Manager/static/js/main.d9c91208.js",
-    "static/js/496.c11b3298.chunk.js": "/Task-Manager/static/js/496.c11b3298.chunk.js",
+    "main.css": "/Task-Manager/static/css/main.ac388139.css",
+    "main.js": "/Task-Manager/static/js/main.df6b7c63.js",
+    "static/js/496.f0832a64.chunk.js": "/Task-Manager/static/js/496.f0832a64.chunk.js",
     "static/media/brand-icons.svg": "/Task-Manager/static/media/brand-icons.6729d29753e000c17489.svg",
     "static/media/icons.svg": "/Task-Manager/static/media/icons.62d9dae4e0040e81c980.svg",
     "static/media/outline-icons.svg": "/Task-Manager/static/media/outline-icons.9c4845b4b41ef40a22fa.svg",
@@ -20,12 +20,12 @@
     "static/media/outline-icons.woff": "/Task-Manager/static/media/outline-icons.ddae9b1ba9b0b42f5880.woff",
     "static/media/outline-icons.woff2": "/Task-Manager/static/media/outline-icons.687a4990ea22bb1a49d4.woff2",
     "index.html": "/Task-Manager/index.html",
-    "main.1e3433c2.css.map": "/Task-Manager/static/css/main.1e3433c2.css.map",
-    "main.d9c91208.js.map": "/Task-Manager/static/js/main.d9c91208.js.map",
-    "496.c11b3298.chunk.js.map": "/Task-Manager/static/js/496.c11b3298.chunk.js.map"
+    "main.ac388139.css.map": "/Task-Manager/static/css/main.ac388139.css.map",
+    "main.df6b7c63.js.map": "/Task-Manager/static/js/main.df6b7c63.js.map",
+    "496.f0832a64.chunk.js.map": "/Task-Manager/static/js/496.f0832a64.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1e3433c2.css",
-    "static/js/main.d9c91208.js"
+    "static/css/main.ac388139.css",
+    "static/js/main.df6b7c63.js"
   ]
 }
